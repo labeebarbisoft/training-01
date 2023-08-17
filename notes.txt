@@ -1,0 +1,17 @@
+> python3 -m venv .venv
+> source .venv/bin/activate
+> python -m pip install django~=4.0.0
+
+> django-admin startproject mysite .
+> python3 manage.py runserver
+
+> python manage.py startapp polls
+# need to create urls.py in the polls directory
+# need to add "polls.apps.PollsConfig", in INSTALLED_APPS in mysite/settings.py
+
+# do this when you add/cahnge models
+> python3 manage.py makemigrations polls
+> python manage.py sqlmigrate polls 0001 (will display sql that will be executed)
+> python manage.py migrate
+
+> python mange.py shell ()
