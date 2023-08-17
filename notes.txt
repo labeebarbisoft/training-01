@@ -14,4 +14,6 @@
 > python manage.py sqlmigrate polls 0001 (will display sql that will be executed)
 > python manage.py migrate
 
-> python mange.py shell ()
+> python mange.py shell (to manually add data using python, can not use simple python)
+
+python manage.py createsuperuser
