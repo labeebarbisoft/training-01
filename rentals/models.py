@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -28,54 +29,62 @@ class RideRequest(models.Model):
     pickup_location = models.CharField(max_length=100)
     dropoff_location = models.CharField(max_length=100)
 
-    STATUS_TYPES = [
-        ("pending", "Pending Confirmation"),
-        ("ongoing", "Ride In Progress"),
-        ("finished", "Ride Completed"),
-    ]
-    current_status = models.CharField(
-        max_length=20,
-        choices=STATUS_TYPES,
-        default="pending",
-    )
+    driver_assigned = models.BooleanField(default=False, editable=False)
+    car_assigned = models.BooleanField(default=False, editable=False)
+    ride_completed = models.BooleanField(default=False)
 
-    car = models.OneToOneField(
+    car = models.ForeignKey(
         Car,
         on_delete=models.SET_NULL,
         null=True,
-        related_name="ride_request",
-        limit_choices_to={"is_available": True},
+        blank=True,
+        related_name="ride_request_car",
     )
-    driver = models.OneToOneField(
+    driver = models.ForeignKey(
         Driver,
         on_delete=models.SET_NULL,
         null=True,
-        related_name="ride_request",
-        limit_choices_to={"is_available": True},
+        blank=True,
+        related_name="ride_request_driver",
     )
 
     def save(self, *args, **kwargs):
         if self.pk:
-            if self.driver is not None and self.current_status == "ongoing":
-                self.driver.is_available = False
-                self.driver.save()
-            if self.driver is not None and self.current_status == "finished":
-                self.driver.is_available = True
-                self.driver.save()
+            ride_req_db = RideRequest.objects.get(pk=self.pk)
+            if ride_req_db.ride_completed is True:
+                raise ValidationError("Completed rides can not be edited.")
 
-            if self.car is not None and self.current_status == "ongoing":
-                self.car.is_available = False
-                self.car.save()
-            if self.car is not None and self.current_status == "finished":
-                self.car.is_available = True
-                self.car.save()
-        else:
-            if self.driver is not None:
-                self.driver.is_available = False
-                self.driver.save()
-            if self.car is not None:
-                self.car.is_available = False
-                self.car.save()
+            if ride_req_db.driver is not None and self.driver != ride_req_db.driver:
+                raise ValidationError("Assigned drivers can not be edited.")
+
+            if ride_req_db.car is not None and self.car != ride_req_db.car:
+                raise ValidationError("Assigned cars can not be edited.")
+
+        if self.ride_completed is True:
+            self.car.is_available = True
+            self.car.save()
+            self.driver.is_available = True
+            self.driver.save()
+
+        if (
+            self.driver is not None
+            and self.driver_assigned is False
+            and self.ride_completed is False
+        ):
+            self.driver_assigned = True
+            self.driver.is_available = False
+            self.driver.save()
+            print("here")
+
+        if (
+            self.car is not None
+            and self.car_assigned is False
+            and self.ride_completed is False
+        ):
+            self.car_assigned = True
+            self.car.is_available = False
+            self.car.save()
+            print("here")
 
         super().save(*args, **kwargs)
 
