@@ -1,21 +1,19 @@
-from django.contrib.auth.models import AbstractBaseUser, User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(max_length=500, blank=True)
-    location = models.CharField(max_length=30, blank=True)
-    birth_date = models.DateField(null=True, blank=True)
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     bio = models.TextField(max_length=500, blank=True)
+#     location = models.CharField(max_length=30, blank=True)
+#     birth_date = models.DateField(null=True, blank=True)
 
 
-class Driver(AbstractBaseUser):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+class CarDriver(AbstractUser):
     is_available = models.BooleanField(default=True)
 
-    def __str__(self):
-        return self.first_name + " " + self.last_name
+    # def __str__(self):
+    #     return self.first_name + " " + self.last_name
 
 
 class Car(models.Model):
@@ -30,7 +28,7 @@ class Car(models.Model):
     is_available = models.BooleanField(default=True)
 
     driver = models.OneToOneField(
-        Driver,
+        CarDriver,
         on_delete=models.SET_NULL,
         null=True,
     )
@@ -50,7 +48,7 @@ class RideRequest(models.Model):
         limit_choices_to={"is_available": True},
     )
     driver = models.OneToOneField(
-        Driver,
+        CarDriver,
         on_delete=models.SET_NULL,
         null=True,
         related_name="ride_request",
