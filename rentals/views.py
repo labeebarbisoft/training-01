@@ -8,7 +8,7 @@ def index(request):
     if request.method == "POST":
         form = RideBookingForm(request.POST)
         if form.is_valid():
-            request.session["cleaned_data"] = {"abc": "cde"}  # form.cleaned_data
+            request.session["cleaned_data"] = request.POST
             return redirect("book_ride")
     else:
         form = RideBookingForm()
@@ -17,9 +17,9 @@ def index(request):
 
 def book_ride(request):
     cleaned_data = request.session["cleaned_data"]
-    # pickup_location = cleaned_data["pickup_location"]
-    # dropoff_location = cleaned_data["dropoff_location"]
-    # selected_car = cleaned_data["selected_car"]
-    # selected_driver = cleaned_data["selected_driver"]
+    pickup_location = cleaned_data["pickup_location"]
+    dropoff_location = cleaned_data["dropoff_location"]
+    selected_car = cleaned_data["selected_car"]
+    selected_driver = cleaned_data["selected_driver"]
     print(cleaned_data)
     return render(request, "rentals/success.html")
