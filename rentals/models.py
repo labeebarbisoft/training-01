@@ -1,7 +1,8 @@
+from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 
 
-class Driver(models.Model):
+class Driver(AbstractBaseUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     is_available = models.BooleanField(default=True)
