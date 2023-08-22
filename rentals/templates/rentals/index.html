@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post" novalidate>
+        {% csrf_token %}
+        <p>
+            {{ form.pickup_location.label }}<br>
+            {{ form.pickup_location }}
+            {% if form.is_bound %}
+            {% for error in form.pickup_location.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            {% endif %}
+        </p>
+        <p>
+            {{ form.dropoff_location.label }}<br>
+            {{ form.dropoff_location }}
+            {% if form.is_bound %}
+            {% for error in form.dropoff_location.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            {% endif %}
+        </p>
+        <p>
+            {{ form.selected_car.label }}<br>
+            {{ form.selected_car }}
+            {% if form.is_bound %}
+            {% for error in form.selected_car.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            {% endif %}
+        </p>
+        <p>
+            {{ form.selected_driver.label }}<br>
+            {{ form.selected_driver }}
+            {% if form.is_bound %}
+            {% for error in form.selected_driver.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            {% endif %}
+        </p>
+        <button type="submit">Book Ride</button>
+    </form>
+</body>
+</html>
