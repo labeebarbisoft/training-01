@@ -1,0 +1,11 @@
+[
+    {
+      "model": "rentals.CarDriver",
+      "fields": {
+        "password": "ali",
+        "username": "ali",
+        "first_name": "ali",
+        "last_name": "shah"
+      }
+    }
+  ]
