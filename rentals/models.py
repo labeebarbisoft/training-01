@@ -62,6 +62,13 @@ class RideRequest(models.Model):
         blank=True,
         related_name="ride_request_driver",
     )
+    customer = models.ForeignKey(
+        Profile,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="ride_request_customer",
+    )
 
     def __str__(self):
         return f"From {self.pickup_location} to {self.dropoff_location} with {self.driver} on {self.car}"

@@ -1,24 +1,4 @@
 [
-    {
-      "model": "rentals.Driver",
-      "pk": 1,
-      "fields": {
-        "password": "ali",
-        "username": "ali",
-        "first_name": "ali",
-        "last_name": "shah"
-      }
-    },
-    {
-        "model": "rentals.Driver",
-        "pk": 2,
-        "fields": {
-          "password": "alina",
-          "username": "alina",
-          "first_name": "alina",
-          "last_name": "shah"
-        }
-      },
       {
         "model": "rentals.Car",
         "pk": 1,
@@ -27,14 +7,6 @@
           "fuel_type": "Diesel",
           "num_of_seats": 20,
           "fare_price_per_km": 10
-        }
-      },
-      {
-        "model": "rentals.RideRequest",
-        "pk": 1,
-        "fields": {
-          "pickup_location": "home",
-          "dropoff_location": "work"
         }
       }
   ]

@@ -5,13 +5,11 @@
 <form action="" method="post" novalidate>
     {% csrf_token %}
     <p>
-        {{ form.selected_car.label }}<br>
+        {{ form.selected_car.label }}
         {{ form.selected_car }}
-        {% if form.is_bound %}
         {% for error in form.selected_car.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-        {% endif %}
     </p>
     <button type="submit">Next</button>
 </form>

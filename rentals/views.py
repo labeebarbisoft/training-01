@@ -9,7 +9,7 @@ from .forms import (
     ProfileForm,
     PickupDropoffTimeForm,
 )
-from .models import Car, Profile, RideRequest
+from .models import Car, Profile, RideRequest, User
 
 
 def index(request):
@@ -41,25 +41,27 @@ def select_car(request):
 
 
 def register_user(request):
-    print("here")
     if request.method == "POST":
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        user_form = UserForm(request.POST)
+        profile_form = ProfileForm(request.POST)
         pickup_dropoff_time_form = PickupDropoffTimeForm(request.POST)
         if (
             user_form.is_valid()
             and profile_form.is_valid()
             and pickup_dropoff_time_form.is_valid()
         ):
-            user_form.save()
-            profile_form.save()
-            messages.success(request, _("Your profile was successfully updated!"))
-            return redirect("add_to_db")
-        else:
-            messages.error(request, _("Please correct the error below."))
+            ride_req = RideRequest(
+                pickup_location=request.session["pickup_location"],
+                dropoff_location=request.session["dropoff_location"],
+                pickup_time=request.POST["pickup_time"],
+                dropoff_time=request.POST["dropoff_time"],
+            )
+            ride_req.save()
+
+            return render(request, "rentals/success.html")
     else:
-        user_form = UserForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.profile)
+        user_form = UserForm()
+        profile_form = ProfileForm()
         pickup_dropoff_time_form = PickupDropoffTimeForm()
     return render(
         request,
@@ -70,7 +72,3 @@ def register_user(request):
             "pickup_dropoff_time_form": pickup_dropoff_time_form,
         },
     )
-
-
-def add_to_db(request):
-    pass

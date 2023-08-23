@@ -2,11 +2,50 @@
 
 {% block content %}
 
-<form method="post">
+<form actions="" method="post" novalidate>
     {% csrf_token %}
-    {{ user_form.as_p }}
-    {{ profile_form.as_p }}
-    {{ pickup_dropoff_time_form.as_p}}
+    <p>
+        {{ user_form.first_name.label }}
+        {{ user_form.first_name }}
+        {% for error in user_form.first_name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ user_form.last_name.label }}
+        {{ user_form.last_name }}
+        {% for error in user_form.last_name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ user_form.email.label }}
+        {{ user_form.email }}
+        {% for error in user_form.email.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ profile_form.contact_number.label }}
+        {{ profile_form.contact_number }}
+        {% for error in profile_form.contact_number.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ pickup_dropoff_time_form.pickup_time.label }}
+        {{ pickup_dropoff_time_form.pickup_time }}
+        {% for error in pickup_dropoff_time_form.pickup_time.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ pickup_dropoff_time_form.dropoff_time.label }}
+        {{ pickup_dropoff_time_form.dropoff_time }}
+        {% for error in pickup_dropoff_time_form.dropoff_time.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
     <button type="submit">Next</button>
   </form>
 

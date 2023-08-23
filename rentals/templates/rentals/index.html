@@ -5,22 +5,18 @@
 <form action="" method="post" novalidate>
     {% csrf_token %}
     <p>
-        {{ form.pickup_location.label }}<br>
+        {{ form.pickup_location.label }}
         {{ form.pickup_location }}
-        {% if form.is_bound %}
         {% for error in form.pickup_location.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-        {% endif %}
     </p>
     <p>
-        {{ form.dropoff_location.label }}<br>
+        {{ form.dropoff_location.label }}
         {{ form.dropoff_location }}
-        {% if form.is_bound %}
         {% for error in form.dropoff_location.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-        {% endif %}
     </p>
     <button type="submit">Next</button>
 </form>
