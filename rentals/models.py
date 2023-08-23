@@ -1,13 +1,28 @@
-from django.contrib.auth.models import AbstractUser
-from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
-class Driver(AbstractUser):
-    is_available = models.BooleanField(default=True)
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    USER_TYPES = [
+        ("Customer", "Customer"),
+        ("Driver", "Driver"),
+    ]
+    role = models.CharField(max_length=20, default="Customer", choices=USER_TYPES)
+    contact_number = models.CharField(max_length=20)
 
-    def __str__(self):
-        return self.first_name + " " + self.last_name
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 class Car(models.Model):
@@ -28,9 +43,9 @@ class Car(models.Model):
 class RideRequest(models.Model):
     pickup_location = models.CharField(max_length=100)
     dropoff_location = models.CharField(max_length=100)
-
-    # driver_assigned = models.BooleanField(default=False, editable=False)
-    # car_assigned = models.BooleanField(default=False, editable=False)
+    pickup_time = models.DateTimeField()
+    dropoff_time = models.DateTimeField()
+    ride_authorized = models.BooleanField(default=False)
     ride_completed = models.BooleanField(default=False)
 
     car = models.ForeignKey(
@@ -41,52 +56,12 @@ class RideRequest(models.Model):
         related_name="ride_request_car",
     )
     driver = models.ForeignKey(
-        Driver,
+        Profile,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="ride_request_driver",
     )
-
-    def save(self, *args, **kwargs):
-        # if self.pk:
-        #     ride_req_db = RideRequest.objects.get(pk=self.pk)
-        #     if ride_req_db.ride_completed is True:
-        #         raise ValidationError("Completed rides can not be edited.")
-
-        #     if ride_req_db.driver is not None and self.driver != ride_req_db.driver:
-        #         raise ValidationError("Assigned drivers can not be edited.")
-
-        #     if ride_req_db.car is not None and self.car != ride_req_db.car:
-        #         raise ValidationError("Assigned cars can not be edited.")
-
-        # if self.ride_completed is True:
-        #     self.car.is_available = True
-        #     self.car.save()
-        #     self.driver.is_available = True
-        #     self.driver.save()
-
-        # if (
-        #     self.driver is not None
-        #     and self.driver_assigned is False
-        #     and self.ride_completed is False
-        # ):
-        #     self.driver_assigned = True
-        #     self.driver.is_available = False
-        #     self.driver.save()
-        #     print("here")
-
-        # if (
-        #     self.car is not None
-        #     and self.car_assigned is False
-        #     and self.ride_completed is False
-        # ):
-        #     self.car_assigned = True
-        #     self.car.is_available = False
-        #     self.car.save()
-        #     print("here")
-
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"From {self.pickup_location} to {self.dropoff_location} with {self.driver} on {self.car}"

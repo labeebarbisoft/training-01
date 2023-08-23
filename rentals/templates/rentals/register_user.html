@@ -1,0 +1,13 @@
+{% extends "rentals/base.html" %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+    {{ pickup_dropoff_time_form.as_p}}
+    <button type="submit">Next</button>
+  </form>
+
+{% endblock %}
