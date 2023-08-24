@@ -38,11 +38,14 @@ class VehicleCategory(models.Model):
         ("coaster", "Coaster"),
         ("grand_cabin", "Grand Cabin"),
     ]
-    vehicle_category = models.CharField(
+    category = models.CharField(
         max_length=20,
         choices=VEHICLE_CATEGORY_TYPES,
         blank=False,
     )
+
+    def __str__(self):
+        return dict(self.VEHICLE_CATEGORY_TYPES)[self.category]
 
 
 class Vehicle(models.Model):
@@ -61,8 +64,45 @@ class Vehicle(models.Model):
 
 
 class Location(models.Model):
-    location_title = models.CharField(max_length=20, blank=False)
+    title = models.CharField(max_length=20, blank=False)
     full_address = models.CharField(max_length=100, blank=False)
+
+    def __str__(self):
+        return self.title
+
+
+class FareRate(models.Model):
+    pickup = models.ForeignKey(
+        Location,
+        related_name="pickup_fares",
+        on_delete=models.CASCADE,
+    )
+    dropoff = models.ForeignKey(
+        Location,
+        related_name="dropoff_fares",
+        on_delete=models.CASCADE,
+    )
+    fare = models.IntegerField(blank=False)
+
+    def __str__(self):
+        return f"{self.pickup} -> {self.dropoff} | Fare: {self.fare}"
+
+
+@receiver(post_save, sender=Location)
+def create_fare_entries(sender, instance, created, **kwargs):
+    if created:
+        all_locations = Location.objects.exclude(pk=instance.pk)
+        for other_location in all_locations:
+            FareRate.objects.create(
+                pickup=instance,
+                dropoff=other_location,
+                fare=len(str(other_location)) + len(str(instance)),
+            )
+            FareRate.objects.create(
+                pickup=other_location,
+                dropoff=instance,
+                fare=len(str(other_location)) + len(str(instance)),
+            )
 
 
 class VehicleBookingRequest(models.Model):
