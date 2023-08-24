@@ -56,7 +56,6 @@ class Vehicle(models.Model):
     ]
     fuel_type = models.CharField(max_length=20, choices=FUEL_TYPES, blank=False)
     seating_capacity = models.IntegerField(blank=False)
-    fare_price = models.IntegerField(blank=False)
     is_active = models.BooleanField(blank=False)
 
     def __str__(self):
