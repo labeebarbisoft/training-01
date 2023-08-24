@@ -120,6 +120,54 @@
       "title": "KFC",
       "full_address": "22 PP Block, Barkat Market"
     }
+  },
+  {
+    "model": "rentals.FareRate",
+    "fields": {
+      "pickup": 1,
+      "dropoff": 2,
+      "fare": 10
+    }
+  },
+  {
+    "model": "rentals.FareRate",
+    "fields": {
+      "pickup": 1,
+      "dropoff": 3,
+      "fare": 10
+    }
+  },
+  {
+    "model": "rentals.FareRate",
+    "fields": {
+      "pickup": 2,
+      "dropoff": 3,
+      "fare": 10
+    }
+  },
+  {
+    "model": "rentals.FareRate",
+    "fields": {
+      "pickup": 2,
+      "dropoff": 1,
+      "fare": 10
+    }
+  },
+  {
+    "model": "rentals.FareRate",
+    "fields": {
+      "pickup": 3,
+      "dropoff": 1,
+      "fare": 10
+    }
+  },
+  {
+    "model": "rentals.FareRate",
+    "fields": {
+      "pickup": 3,
+      "dropoff": 2,
+      "fare": 10
+    }
   }
 ]
 
