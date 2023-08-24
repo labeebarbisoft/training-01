@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, User, Car
+from .models import Profile, User, Vehicle
 
 
 class UserForm(forms.Form):
@@ -47,6 +47,6 @@ class PickupDropoffForm(forms.Form):
 class CarSelectionForm(forms.Form):
     selected_car = forms.ModelChoiceField(
         label="Selected Car",
-        queryset=Car.objects.all(),
+        queryset=Vehicle.objects.all(),
         empty_label="Select vehicle",
     )

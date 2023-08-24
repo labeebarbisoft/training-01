@@ -9,7 +9,7 @@ from .forms import (
     ProfileForm,
     PickupDropoffTimeForm,
 )
-from .models import Car, Profile, RideRequest, User
+from .models import Vehicle, Profile, VehicleBookingRequest, User
 
 
 def index(request):
@@ -35,11 +35,6 @@ def select_car(request):
     return render(request, "rentals/select_car.html", {"form": form})
 
 
-#     pickup_location = request.session["pickup_location"]
-#     dropoff_location = request.session["dropoff_location"]
-#     selected_car = request.session["selected_car"]
-
-
 def register_user(request):
     if request.method == "POST":
         user_form = UserForm(request.POST)
@@ -50,7 +45,7 @@ def register_user(request):
             and profile_form.is_valid()
             and pickup_dropoff_time_form.is_valid()
         ):
-            ride_req = RideRequest(
+            ride_req = VehicleBookingRequest(
                 pickup_location=request.session["pickup_location"],
                 dropoff_location=request.session["dropoff_location"],
                 pickup_time=request.POST["pickup_time"],
