@@ -14,65 +14,84 @@ from .models import Vehicle, Profile, VehicleBookingRequest, User
 
 
 class LocationList(View):
-    template = "rentals/location_menu.html"
-    form = PickupDropoffLocationForm
+    TEMPLATE = "rentals/location_menu.html"
+    LOCATION_FORM = PickupDropoffLocationForm
 
     def get(self, request):
-        form = self.form()
-        return render(request, self.template, {"form": form})
+        location_form = self.LOCATION_FORM()
+        return render(request, self.TEMPLATE, {"form": location_form})
 
     def post(self, request):
-        form = self.form(request.POST)
-        if form.is_valid():
-            request.session["pickup_location"] = form.cleaned_data["pickup_location"]
-            request.session["dropoff_location"] = form.cleaned_data["dropoff_location"]
-            return redirect(
-                "vehicle_menu"
-            )  # Replace "select_car" with your actual URL name
+        location_form = self.LOCATION_FORM(request.POST)
+        if location_form.is_valid():
+            request.session["pickup_location"] = location_form.cleaned_data[
+                "pickup_location"
+            ].pk
+            request.session["dropoff_location"] = location_form.cleaned_data[
+                "dropoff_location"
+            ].pk
+            return redirect("vehicle_menu")
 
-        return render(request, self.template, {"form": form})
+        return render(request, self.TEMPLATE, {"form": location_form})
 
 
-def select_car(request):
-    if request.method == "POST":
-        form = VehicleSelectionForm(request.POST)
-        if form.is_valid():
+class VehicleList(View):
+    TEMPLATE = "rentals/vehicle_menu.html"
+    VEHICLE_FORM = VehicleSelectionForm
+
+    def get(self, request):
+        vehicle_form = self.VEHICLE_FORM()
+        return render(
+            request,
+            self.TEMPLATE,
+            {"form": vehicle_form},
+        )
+
+    def post(self, request):
+        vehicle_form = self.VEHICLE_FORM(request.POST)
+        if vehicle_form.is_valid():
             request.session["selected_car"] = request.POST["selected_car"]
             return redirect("register_user")
-    else:
-        form = VehicleSelectionForm()
-    return render(request, "rentals/select_car.html", {"form": form})
+
+        return render(request, self.TEMPLATE, {"form": vehicle_form})
 
 
-def register_user(request):
-    if request.method == "POST":
-        user_form = UserForm(request.POST)
-        profile_form = ProfileForm(request.POST)
-        pickup_dropoff_time_form = PickupDropoffDateTimeForm(request.POST)
+class UserRegister(View):
+    TEMPLATE = "rentals/register_user.html"
+    USER_FORM = UserForm
+    PROFILE_FORM = ProfileForm
+    DATETIME_FORM = PickupDropoffDateTimeForm
+
+    def get(self, request):
+        user_form = self.USER_FORM()
+        profile_form = self.PROFILE_FORM()
+        datetime_form = self.DATETIME_FORM()
+        return render(
+            request,
+            self.TEMPLATE,
+            {
+                "user_form": user_form,
+                "profile_form": profile_form,
+                "pickup_dropoff_time_form": datetime_form,
+            },
+        )
+
+    def post(self, request):
+        user_form = self.USER_FORM(request.POST)
+        profile_form = self.PROFILE_FORM(request.POST)
+        datetime_form = self.DATETIME_FORM(request.POST)
         if (
             user_form.is_valid()
             and profile_form.is_valid()
-            and pickup_dropoff_time_form.is_valid()
+            and datetime_form.is_valid()
         ):
-            ride_req = VehicleBookingRequest(
-                pickup_location=request.session["pickup_location"],
-                dropoff_location=request.session["dropoff_location"],
-                pickup_time=request.POST["pickup_time"],
-                dropoff_time=request.POST["dropoff_time"],
-            )
-            ride_req.save()
-
             return render(request, "rentals/success.html")
-    else:
-        user_form = UserForm()
-        profile_form = ProfileForm()
-        pickup_dropoff_time_form = PickupDropoffDateTimeForm()
-    return render(
-        request,
-        "rentals/register_user.html",
-        {
-            "user_form": user_form,
-            "profile_form": profile_form,
-            "pickup_dropoff_time_form": pickup_dropoff_time_form,
-        },
-    )
+        return render(
+            request,
+            self.TEMPLATE,
+            {
+                "user_form": user_form,
+                "profile_form": profile_form,
+                "pickup_dropoff_time_form": datetime_form,
+            },
+        )
