@@ -1,6 +1,69 @@
-from django.shortcuts import render
 from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.contrib import messages
+from .forms import (
+    PickupDropoffLocationForm,
+    VehicleSelectionForm,
+    UserForm,
+    ProfileForm,
+    PickupDropoffDateTimeForm,
+)
+from .models import Vehicle, Profile, VehicleBookingRequest, User
 
 
 def index(request):
-    return HttpResponse("Ola!")
+    if request.method == "POST":
+        form = PickupDropoffLocationForm(request.POST)
+        if form.is_valid():
+            request.session["pickup_location"] = request.POST["pickup_location"]
+            request.session["dropoff_location"] = request.POST["dropoff_location"]
+            return redirect("select_car")
+    else:
+        form = PickupDropoffLocationForm()
+    return render(request, "rentals/index.html", {"form": form})
+
+
+def select_car(request):
+    if request.method == "POST":
+        form = VehicleSelectionForm(request.POST)
+        if form.is_valid():
+            request.session["selected_car"] = request.POST["selected_car"]
+            return redirect("register_user")
+    else:
+        form = VehicleSelectionForm()
+    return render(request, "rentals/select_car.html", {"form": form})
+
+
+def register_user(request):
+    if request.method == "POST":
+        user_form = UserForm(request.POST)
+        profile_form = ProfileForm(request.POST)
+        pickup_dropoff_time_form = PickupDropoffDateTimeForm(request.POST)
+        if (
+            user_form.is_valid()
+            and profile_form.is_valid()
+            and pickup_dropoff_time_form.is_valid()
+        ):
+            ride_req = VehicleBookingRequest(
+                pickup_location=request.session["pickup_location"],
+                dropoff_location=request.session["dropoff_location"],
+                pickup_time=request.POST["pickup_time"],
+                dropoff_time=request.POST["dropoff_time"],
+            )
+            ride_req.save()
+
+            return render(request, "rentals/success.html")
+    else:
+        user_form = UserForm()
+        profile_form = ProfileForm()
+        pickup_dropoff_time_form = PickupDropoffDateTimeForm()
+    return render(
+        request,
+        "rentals/register_user.html",
+        {
+            "user_form": user_form,
+            "profile_form": profile_form,
+            "pickup_dropoff_time_form": pickup_dropoff_time_form,
+        },
+    )
