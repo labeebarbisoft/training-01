@@ -1,0 +1,119 @@
+[
+    {
+      "model": "rentals.VehicleCategory",
+      "pk": 1,
+      "fields": {
+        "category": "sedan"
+      }
+    }, 
+    {
+      "model": "rentals.VehicleCategory",
+      "pk": 2,
+      "fields": {
+        "category": "coaster"
+      }
+    },   
+    {
+      "model": "rentals.VehicleCategory",
+      "pk": 3,
+      "fields": {
+        "category": "grand_cabin"
+      }
+    },
+    {
+      "model": "rentals.Vehicle",
+      "pk": 1,
+      "fields": {
+        "category": 1,
+        "fuel_type": "gasoline",
+        "seating_capacity": 12,
+        "is_active": true
+      }
+    },
+    {
+      "model": "rentals.Vehicle",
+      "pk": 2,
+      "fields": {
+        "category": 1,
+        "fuel_type": "gasoline",
+        "seating_capacity": 14,
+        "is_active": true
+      }
+    },
+    {
+      "model": "rentals.Vehicle",
+      "pk": 3,
+      "fields": {
+        "category": 1,
+        "fuel_type": "gasoline",
+        "seating_capacity": 12,
+        "is_active": false
+      }
+    },
+    {
+      "model": "rentals.Vehicle",
+      "pk": 4,
+      "fields": {
+        "category": 2,
+        "fuel_type": "gasoline",
+        "seating_capacity": 12,
+        "is_active": true
+      }
+    },
+    {
+      "model": "rentals.Vehicle",
+      "pk": 5,
+      "fields": {
+        "category": 1,
+        "fuel_type": "gasoline",
+        "seating_capacity": 22,
+        "is_active": true
+      }
+    },
+    {
+      "model": "rentals.Vehicle",
+      "pk": 5,
+      "fields": {
+        "category": 1,
+        "fuel_type": "diesel",
+        "seating_capacity": 12,
+        "is_active": true
+      }
+    },
+    {
+      "model": "rentals.Vehicle",
+      "pk": 6,
+      "fields": {
+        "category": 1,
+        "fuel_type": "diesel",
+        "seating_capacity": 12,
+        "is_active": false
+      }
+    },
+    {
+      "model": "rentals.Location",
+      "pk": 1,
+      "fields": {
+        "title": "Arbisoft",
+        "full_address": "25 WestWood Colony, Canal Road"
+      }
+    },
+    {
+      "model": "rentals.Location",
+      "pk": 2,
+      "fields": {
+        "title": "Ground",
+        "full_address": "Street Number 66, Canal Road"
+      }
+    },
+    {
+      "model": "rentals.Location",
+      "pk": 3,
+      "fields": {
+        "title": "KFC",
+        "full_address": "22 PP Block, Barkat Market"
+      }
+    }
+  ]
+  
+  
