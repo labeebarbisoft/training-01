@@ -1,8 +1,5 @@
 from django.views import View
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.contrib import messages
 from .forms import (
     PickupDropoffLocationForm,
     VehicleSelectionForm,
@@ -31,8 +28,8 @@ class LocationList(View):
                 "dropoff_location"
             ].pk
             return redirect("vehicle_menu")
-
-        return render(request, self.TEMPLATE, {"form": location_form})
+        else:
+            return render(request, self.TEMPLATE, {"form": location_form})
 
 
 class VehicleList(View):
@@ -52,8 +49,8 @@ class VehicleList(View):
         if vehicle_form.is_valid():
             request.session["selected_car"] = request.POST["selected_car"]
             return redirect("register_user")
-
-        return render(request, self.TEMPLATE, {"form": vehicle_form})
+        else:
+            return render(request, self.TEMPLATE, {"form": vehicle_form})
 
 
 class UserRegister(View):
@@ -86,12 +83,13 @@ class UserRegister(View):
             and datetime_form.is_valid()
         ):
             return render(request, "rentals/success.html")
-        return render(
-            request,
-            self.TEMPLATE,
-            {
-                "user_form": user_form,
-                "profile_form": profile_form,
-                "pickup_dropoff_time_form": datetime_form,
-            },
-        )
+        else:
+            return render(
+                request,
+                self.TEMPLATE,
+                {
+                    "user_form": user_form,
+                    "profile_form": profile_form,
+                    "pickup_dropoff_time_form": datetime_form,
+                },
+            )
