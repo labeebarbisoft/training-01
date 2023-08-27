@@ -1,3 +1,4 @@
+from django.views import View
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -12,16 +13,24 @@ from .forms import (
 from .models import Vehicle, Profile, VehicleBookingRequest, User
 
 
-def index(request):
-    if request.method == "POST":
-        form = PickupDropoffLocationForm(request.POST)
+class LocationList(View):
+    template = "rentals/location_menu.html"
+    form = PickupDropoffLocationForm
+
+    def get(self, request):
+        form = self.form()
+        return render(request, self.template, {"form": form})
+
+    def post(self, request):
+        form = self.form(request.POST)
         if form.is_valid():
-            request.session["pickup_location"] = request.POST["pickup_location"]
-            request.session["dropoff_location"] = request.POST["dropoff_location"]
-            return redirect("select_car")
-    else:
-        form = PickupDropoffLocationForm()
-    return render(request, "rentals/index.html", {"form": form})
+            request.session["pickup_location"] = form.cleaned_data["pickup_location"]
+            request.session["dropoff_location"] = form.cleaned_data["dropoff_location"]
+            return redirect(
+                "vehicle_menu"
+            )  # Replace "select_car" with your actual URL name
+
+        return render(request, self.template, {"form": form})
 
 
 def select_car(request):

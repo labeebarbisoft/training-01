@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, User, Vehicle
+from .models import Profile, User, Vehicle, Location
 
 
 class UserForm(forms.Form):
@@ -30,23 +30,33 @@ class PickupDropoffDateTimeForm(forms.Form):
 
 
 class PickupDropoffLocationForm(forms.Form):
-    pickup_location = forms.CharField(
+    pickup_location = forms.ModelChoiceField(
         label="Pickup Location",
-        max_length=200,
-        required=True,
-        widget=forms.TextInput(attrs={"placeholder": "Enter pickup location"}),
+        queryset=Location.objects.all(),
+        empty_label="Select pickup location",
     )
-    dropoff_location = forms.CharField(
+    dropoff_location = forms.ModelChoiceField(
         label="Dropoff Location",
-        max_length=100,
-        required=True,
-        widget=forms.TextInput(attrs={"placeholder": "Enter dropoff location"}),
+        queryset=Location.objects.all(),
+        empty_label="Select dropoff location",
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        pickup_location = cleaned_data.get("pickup_location")
+        dropoff_location = cleaned_data.get("dropoff_location")
+
+        if pickup_location and dropoff_location and pickup_location == dropoff_location:
+            self.add_error(
+                "pickup_location", "Pickup and dropoff locations cannot be the same."
+            )
+
+        return cleaned_data
 
 
 class VehicleSelectionForm(forms.Form):
     selected_car = forms.ModelChoiceField(
         label="Selected Car",
-        queryset=Vehicle.objects.all(),
+        queryset=Vehicle.objects.exclude(is_active=False),
         empty_label="Select vehicle",
     )

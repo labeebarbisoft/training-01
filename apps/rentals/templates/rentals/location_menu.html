@@ -1,0 +1,24 @@
+{% extends "rentals/base.html" %}
+
+{% block content %}
+
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    <p>
+        {{ form.pickup_location.label }}
+        {{ form.pickup_location }}
+        {% for error in form.pickup_location.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.dropoff_location.label }}
+        {{ form.dropoff_location }}
+        {% for error in form.dropoff_location.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <button type="submit">Next</button>
+</form>
+
+{% endblock %}
