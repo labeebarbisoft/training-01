@@ -1,52 +1,17 @@
 {% extends "rentals/base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 
-<form actions="" method="post" novalidate>
+<form action="" method="post" novalidate>
     {% csrf_token %}
-    <p>
-        {{ user_form.first_name.label }}
-        {{ user_form.first_name }}
-        {% for error in user_form.first_name.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ user_form.last_name.label }}
-        {{ user_form.last_name }}
-        {% for error in user_form.last_name.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ user_form.email.label }}
-        {{ user_form.email }}
-        {% for error in user_form.email.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ profile_form.contact_number.label }}
-        {{ profile_form.contact_number }}
-        {% for error in profile_form.contact_number.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ pickup_dropoff_time_form.pickup_time.label }}
-        {{ pickup_dropoff_time_form.pickup_time }}
-        {% for error in pickup_dropoff_time_form.pickup_time.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ pickup_dropoff_time_form.dropoff_time.label }}
-        {{ pickup_dropoff_time_form.dropoff_time }}
-        {% for error in pickup_dropoff_time_form.dropoff_time.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <button type="submit">Next</button>
-  </form>
+    {{ user_form|crispy }}
+    {{ profile_form|crispy }}
+    {{ pickup_dropoff_time_form|crispy }}
+    <div class="col-auto my-1">
+        <button type="submit" class="btn btn-primary">Next</button>
+    </div>
+</form>
 
 {% endblock %}

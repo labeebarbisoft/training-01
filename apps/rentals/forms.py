@@ -12,19 +12,15 @@ class ProfileForm(forms.Form):
     contact_number = forms.CharField(max_length=20, required=True)
 
 
-class DateTimePickerInput(forms.DateTimeInput):
-    input_type = "datetime-local"
-
-
 class PickupDropoffDateTimeForm(forms.Form):
     pickup_time = forms.DateTimeField(
         label="Pickup Date/Time",
-        widget=DateTimePickerInput,
+        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
         required=True,
     )
     dropoff_time = forms.DateTimeField(
         label="Dropoff Date/Time",
-        widget=DateTimePickerInput,
+        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
         required=True,
     )
 
@@ -56,7 +52,7 @@ class PickupDropoffLocationForm(forms.Form):
 
 class VehicleSelectionForm(forms.Form):
     selected_car = forms.ModelChoiceField(
-        label="Selected Car",
+        label="Selected Vehicle",
         queryset=Vehicle.objects.exclude(is_active=False),
         empty_label="Select vehicle",
     )
