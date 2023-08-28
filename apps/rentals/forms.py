@@ -18,11 +18,11 @@ class PickupDropoffDateTimeForm(forms.Form):
         widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
         required=True,
     )
-    dropoff_time = forms.DateTimeField(
-        label="Dropoff Date/Time",
-        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
-        required=True,
-    )
+    # dropoff_time = forms.DateTimeField(
+    #     label="Dropoff Date/Time",
+    #     widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
+    #     required=True,
+    # )
 
 
 class PickupDropoffLocationForm(forms.Form):

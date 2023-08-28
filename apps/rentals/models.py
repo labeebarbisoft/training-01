@@ -20,6 +20,9 @@ class Profile(models.Model):
     role = models.CharField(max_length=20, choices=ROLE_TYPES, blank=False)
     contact_number = models.CharField(max_length=20, blank=False)
 
+    def __str__(self):
+        return self.user.username
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

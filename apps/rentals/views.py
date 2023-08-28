@@ -7,7 +7,8 @@ from .forms import (
     ProfileForm,
     PickupDropoffDateTimeForm,
 )
-from .models import Vehicle, Profile, VehicleBookingRequest, User
+from .models import Vehicle, Profile, VehicleBookingRequest, Location
+from django.contrib.auth.models import User
 
 
 class LocationList(View):
@@ -47,7 +48,7 @@ class VehicleList(View):
     def post(self, request):
         vehicle_form = self.VEHICLE_FORM(request.POST)
         if vehicle_form.is_valid():
-            request.session["selected_car"] = request.POST["selected_car"]
+            request.session["vehicle"] = vehicle_form.cleaned_data["selected_car"].pk
             return redirect("register_user")
         else:
             return render(request, self.TEMPLATE, {"form": vehicle_form})
@@ -82,6 +83,27 @@ class UserRegister(View):
             and profile_form.is_valid()
             and datetime_form.is_valid()
         ):
+            user = User(
+                username=f"{request.POST['first_name']} {request.POST['last_name']}"
+            )
+            user.save()
+            user.profile.role = "customer"
+            user.profile.contact_number = "123"
+            user.profile.save()
+            ride_request = VehicleBookingRequest(
+                pickup_location=Location.objects.get(
+                    pk=request.session["pickup_location"]
+                ),
+                dropoff_location=Location.objects.get(
+                    pk=request.session["dropoff_location"]
+                ),
+                pickup_datetime=datetime_form.cleaned_data["pickup_time"],
+                status="pending",
+                vehicle=Vehicle.objects.get(pk=request.session["vehicle"]),
+                # driver=1,
+                customer=user.profile,
+            )
+            ride_request.save()
             return render(request, "rentals/success.html")
         else:
             return render(
