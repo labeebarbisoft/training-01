@@ -113,6 +113,54 @@
         "title": "KFC",
         "full_address": "22 PP Block, Barkat Market"
       }
+    },
+    {
+      "model": "auth.User",
+      "pk": 2,
+      "fields": {
+        "username": "Bob Cust"
+      }
+    },
+    {
+      "model": "auth.User",
+      "pk": 3,
+      "fields": {
+        "username": "Dave Cust"
+      }
+    },
+    {
+      "model": "auth.User",
+      "pk": 4,
+      "fields": {
+        "username": "Mike Cust"
+      }
+    },
+    {
+      "model": "auth.User",
+      "pk": 5,
+      "fields": {
+        "username": "John Driv"
+      }
+    },
+    {
+      "model": "auth.User",
+      "pk": 6,
+      "fields": {
+        "username": "Shea Driv"
+      }
+    },
+    {
+      "model": "rentals.VehicleBookingRequest",
+      "pk": 1,
+      "fields": {
+        "pickup_location": 1,
+        "dropoff_location": 2,
+        "pickup_datetime": "2023-08-28T12:00:00Z",
+        "status": "pending",
+        "vehicle": 2,
+        "driver": 6,
+        "customer": 3
+      }
     }
   ]
   
