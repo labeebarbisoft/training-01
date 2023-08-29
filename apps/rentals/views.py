@@ -9,9 +9,11 @@ from .forms import (
 )
 from .models import Vehicle, VehicleBookingRequest, Location
 from django.contrib.auth.models import User
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class LocationList(View):
+class LocationList(LoginRequiredMixin, View):
     TEMPLATE = "rentals/location_menu.html"
     LOCATION_FORM = PickupDropoffLocationForm
 
@@ -32,8 +34,10 @@ class LocationList(View):
         else:
             return render(request, self.TEMPLATE, {"form": location_form})
 
+    login_url = "/login"
 
-class VehicleList(View):
+
+class VehicleList(LoginRequiredMixin, View):
     TEMPLATE = "rentals/vehicle_menu.html"
     VEHICLE_FORM = VehicleSelectionForm
 
@@ -53,8 +57,11 @@ class VehicleList(View):
         else:
             return render(request, self.TEMPLATE, {"form": vehicle_form})
 
+    login_url = "/login"
 
-class UserRegister(View):
+
+class UserRegister(LoginRequiredMixin, View):
+    login_url = "/login"
     TEMPLATE = "rentals/register_user.html"
     USER_FORM = UserForm
     PROFILE_FORM = ProfileForm
@@ -115,3 +122,5 @@ class UserRegister(View):
                     "pickup_dropoff_time_form": datetime_form,
                 },
             )
+
+        login_url = "/login"

@@ -30,8 +30,16 @@
       </button>
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
-          <a class="nav-item nav-link" id="home" href="/">Home</a>
-          <a class="nav-item nav-link" id="logout" href="/admin">Admin Panel</a>
+          {% if user.is_authenticated %}
+          <span class="nav-item nav-link">Welcome Back {{user.username}} | </span>
+          <a class="nav-item nav-link" href="/home">Home</a>
+          <a class="nav-item nav-link" href="/">Book Ride</a>
+          <a class="nav-item nav-link" href="/logout">Logout</a>
+          {% else %}
+          <a class="nav-item nav-link" href="/login">Login</a>
+          <a class="nav-item nav-link" href="/accounts/signup">Signup</a>
+          {% endif %}
+          <a class="nav-item nav-link" href="/admin">Admin Panel</a>
         </div>
       </div>
     </nav>
