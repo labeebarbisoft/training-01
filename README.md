@@ -1,1 +1,1 @@
-# Branch for finalising models and views
+# Branch for user authentication
