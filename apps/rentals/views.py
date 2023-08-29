@@ -7,7 +7,7 @@ from .forms import (
     ProfileForm,
     PickupDropoffDateTimeForm,
 )
-from .models import Vehicle, Profile, VehicleBookingRequest, Location
+from .models import Vehicle, VehicleBookingRequest, Location
 from django.contrib.auth.models import User
 
 
