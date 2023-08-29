@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "apps.rentals.apps.RentalsConfig",
+    "apps.userauth.apps.UserauthConfig",
     "crispy_forms",
     "crispy_bootstrap4",
 ]
