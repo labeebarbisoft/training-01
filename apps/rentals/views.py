@@ -9,7 +9,6 @@ from .forms import (
 )
 from .models import Vehicle, VehicleBookingRequest, Location
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -68,8 +67,24 @@ class UserRegister(LoginRequiredMixin, View):
     DATETIME_FORM = PickupDropoffDateTimeForm
 
     def get(self, request):
-        user_form = self.USER_FORM()
-        profile_form = self.PROFILE_FORM()
+        user = request.user
+        initial_user_data = {
+            "username": user.username,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+        }
+        initial_profile_data = {
+            "contact_number": user.profile.contact_number,
+        }
+
+        user_form = self.USER_FORM(initial=initial_user_data)
+        profile_form = self.PROFILE_FORM(initial=initial_profile_data)
+        user_form.fields["username"].widget.attrs["disabled"] = "disabled"
+        user_form.fields["email"].widget.attrs["disabled"] = "disabled"
+        user_form.fields["first_name"].widget.attrs["disabled"] = "disabled"
+        user_form.fields["last_name"].widget.attrs["disabled"] = "disabled"
+        profile_form.fields["contact_number"].widget.attrs["disabled"] = "disabled"
         datetime_form = self.DATETIME_FORM()
         return render(
             request,
@@ -123,4 +138,21 @@ class UserRegister(LoginRequiredMixin, View):
                 },
             )
 
-        login_url = "/login"
+
+class HomeView(LoginRequiredMixin, View):
+    login_url = "/login"
+    TEMPLATE = "rentals/home.html"
+
+    def get(self, request):
+        user = request.user
+        booked_rides_model = user.profile.booked_rides.model
+        field_names = [
+            field.verbose_name.capitalize().replace("_", " ")
+            for field in booked_rides_model._meta.get_fields()
+        ]
+        field_names.pop()
+        context = {
+            "field_names": field_names,
+            "objs": user.profile.booked_rides.values,
+        }
+        return render(request, self.TEMPLATE, context)

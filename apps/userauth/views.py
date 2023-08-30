@@ -23,10 +23,11 @@ class SignupView(View):
         user_form = UserForm(request.POST)
         profile_form = ProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save(commit=False)
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            user.save()
+            user = user_form.save()
+            profile = user.profile
+            profile.contact_number = profile_form.cleaned_data["contact_number"]
+            profile.save()
+
             return redirect("login")
         return render(
             request,

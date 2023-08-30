@@ -20,10 +20,7 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        if instance.username.endswith("Cust"):
-            Profile.objects.create(user=instance, role="customer")
-        else:
-            Profile.objects.create(user=instance, role="driver")
+        Profile.objects.create(user=instance, role="customer")
 
 
 @receiver(post_save, sender=User)

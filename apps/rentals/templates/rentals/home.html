@@ -1,0 +1,30 @@
+{% extends "rentals/base.html" %}
+
+{% block content %}
+
+
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        {% for name in field_names %}
+            <th scope="col">{{ name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+        {% for field in user.profile.booked_rides.all %}
+      <tr>
+            <th scope="row">{{ field.id }}</th>
+            <td>{{ field.pickup_location }}</td>
+            <td>{{ field.dropoff_location }}</td>
+            <td>{{ field.pickup_datetime }}</td>
+            <td>{{ field.status }}</td>
+            <td>{{ field.vehicle }}</td>
+            <td>{{ field.driver }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
