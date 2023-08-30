@@ -80,11 +80,12 @@ class UserRegister(LoginRequiredMixin, View):
 
         user_form = self.USER_FORM(initial=initial_user_data)
         profile_form = self.PROFILE_FORM(initial=initial_profile_data)
-        user_form.fields["username"].widget.attrs["disabled"] = "disabled"
-        user_form.fields["email"].widget.attrs["disabled"] = "disabled"
-        user_form.fields["first_name"].widget.attrs["disabled"] = "disabled"
-        user_form.fields["last_name"].widget.attrs["disabled"] = "disabled"
-        profile_form.fields["contact_number"].widget.attrs["disabled"] = "disabled"
+        user_form.fields["username"].widget.attrs["readonly"] = True
+        user_form.fields["email"].widget.attrs["readonly"] = True
+        user_form.fields["first_name"].widget.attrs["readonly"] = True
+        user_form.fields["last_name"].widget.attrs["readonly"] = True
+        profile_form.fields["contact_number"].widget.attrs["readonly"] = True
+
         datetime_form = self.DATETIME_FORM()
         return render(
             request,
@@ -100,18 +101,19 @@ class UserRegister(LoginRequiredMixin, View):
         user_form = self.USER_FORM(request.POST)
         profile_form = self.PROFILE_FORM(request.POST)
         datetime_form = self.DATETIME_FORM(request.POST)
+        user = request.user
         if (
             user_form.is_valid()
             and profile_form.is_valid()
             and datetime_form.is_valid()
         ):
-            user = User(
-                username=f"{request.POST['first_name']} {request.POST['last_name']}"
-            )
-            user.save()
-            user.profile.role = "customer"
-            user.profile.contact_number = "123"
-            user.profile.save()
+            # user = User(
+            #     username=f"{request.POST['first_name']} {request.POST['last_name']}"
+            # )
+            # user.save()
+            # user.profile.role = "customer"
+            # user.profile.contact_number = "123"
+            # user.profile.save()
             ride_request = VehicleBookingRequest(
                 pickup_location=Location.objects.get(
                     pk=request.session["pickup_location"]
