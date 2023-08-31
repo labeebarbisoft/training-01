@@ -4,3 +4,4 @@ migrations/__pycache__/
 __pycache__/
 todo.txt
 db.sqlite3
+.DS_Store
