@@ -6,7 +6,7 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = [
         "__str__",
         "get_user_is_active",
-        "num_booking_requests",
+        "num_driving_requests",
         "num_ride_requests",
     ]
     list_filter = ["role", "user__date_joined"]
@@ -17,13 +17,13 @@ class ProfileAdmin(admin.ModelAdmin):
 
     get_user_is_active.short_description = "User Is Active"
 
-    def num_booking_requests(self, obj):
+    def num_driving_requests(self, obj):
         if obj.role == "driver":
             return obj.drove_rides.count()
         else:
             return "N/A"
 
-    num_booking_requests.short_description = "Number of Booking Requests"
+    num_driving_requests.short_description = "Number of Driving Requests"
 
     def num_ride_requests(self, obj):
         if obj.role == "customer":

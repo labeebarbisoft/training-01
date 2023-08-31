@@ -13,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class LocationList(LoginRequiredMixin, View):
+    login_url = "/login"
     TEMPLATE = "rentals/location_menu.html"
     LOCATION_FORM = PickupDropoffLocationForm
 
@@ -33,10 +34,9 @@ class LocationList(LoginRequiredMixin, View):
         else:
             return render(request, self.TEMPLATE, {"form": location_form})
 
-    login_url = "/login"
-
 
 class VehicleList(LoginRequiredMixin, View):
+    login_url = "/login"
     TEMPLATE = "rentals/vehicle_menu.html"
     VEHICLE_FORM = VehicleSelectionForm
 
@@ -55,8 +55,6 @@ class VehicleList(LoginRequiredMixin, View):
             return redirect("register_user")
         else:
             return render(request, self.TEMPLATE, {"form": vehicle_form})
-
-    login_url = "/login"
 
 
 class UserRegister(LoginRequiredMixin, View):
@@ -107,13 +105,6 @@ class UserRegister(LoginRequiredMixin, View):
             and profile_form.is_valid()
             and datetime_form.is_valid()
         ):
-            # user = User(
-            #     username=f"{request.POST['first_name']} {request.POST['last_name']}"
-            # )
-            # user.save()
-            # user.profile.role = "customer"
-            # user.profile.contact_number = "123"
-            # user.profile.save()
             ride_request = VehicleBookingRequest(
                 pickup_location=Location.objects.get(
                     pk=request.session["pickup_location"]
@@ -128,7 +119,7 @@ class UserRegister(LoginRequiredMixin, View):
                 customer=user.profile,
             )
             ride_request.save()
-            return render(request, "rentals/success.html")
+            return redirect("home")
         else:
             return render(
                 request,
