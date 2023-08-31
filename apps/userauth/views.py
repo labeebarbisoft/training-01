@@ -1,9 +1,6 @@
 from django.views import View
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from .forms import UserForm, ProfileForm
-from django.contrib.auth import login, logout, authenticate
-from apps.rentals.views import LocationList
 
 
 class SignupView(View):
@@ -27,7 +24,6 @@ class SignupView(View):
             profile = user.profile
             profile.contact_number = profile_form.cleaned_data["contact_number"]
             profile.save()
-
             return redirect("login")
         return render(
             request,

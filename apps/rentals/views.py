@@ -65,7 +65,7 @@ class UserRegister(BaseView):
     PROFILE_FORM = ProfileForm
     DATETIME_FORM = PickupDropoffDateTimeForm
 
-    def get(self, request):
+    def prepare_forms(self, request):
         user = request.user
         initial_user_data = {
             "username": user.username,
@@ -85,6 +85,10 @@ class UserRegister(BaseView):
         user_form.fields["last_name"].widget.attrs["readonly"] = True
         profile_form.fields["contact_number"].widget.attrs["readonly"] = True
 
+        return user_form, profile_form
+
+    def get(self, request):
+        user_form, profile_form = self.prepare_forms(request)
         datetime_form = self.DATETIME_FORM()
         return render(
             request,
@@ -97,15 +101,10 @@ class UserRegister(BaseView):
         )
 
     def post(self, request):
-        user_form = self.USER_FORM(request.POST)
-        profile_form = self.PROFILE_FORM(request.POST)
+        user_form, profile_form = self.prepare_forms(request)
         datetime_form = self.DATETIME_FORM(request.POST)
         user = request.user
-        if (
-            user_form.is_valid()
-            and profile_form.is_valid()
-            and datetime_form.is_valid()
-        ):
+        if datetime_form.is_valid():
             ride_request = VehicleBookingRequest(
                 pickup_location=Location.objects.get(
                     pk=request.session["pickup_location"]

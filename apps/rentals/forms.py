@@ -1,5 +1,6 @@
 from django import forms
-from .models import Profile, User, Vehicle, Location
+from .models import Vehicle, Location
+from django.utils import timezone
 
 
 class UserForm(forms.Form):
@@ -19,11 +20,27 @@ class PickupDropoffDateTimeForm(forms.Form):
         widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
         required=True,
     )
-    # dropoff_time = forms.DateTimeField(
-    #     label="Dropoff Date/Time",
-    #     widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
-    #     required=True,
-    # )
+    from django import forms
+
+
+from django.utils import timezone
+
+
+class PickupDropoffDateTimeForm(forms.Form):
+    pickup_time = forms.DateTimeField(
+        label="Pickup Date/Time",
+        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
+        required=True,
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        pickup_time = cleaned_data.get("pickup_time")
+        now = timezone.now()
+
+        if pickup_time and pickup_time <= now:
+            self.add_error("pickup_time", "Pickup time must be in the future.")
+        return cleaned_data
 
 
 class PickupDropoffLocationForm(forms.Form):
