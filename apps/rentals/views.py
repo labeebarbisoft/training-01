@@ -1,5 +1,7 @@
 from django.views import View
+from django.urls import reverse
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import (
     PickupDropoffLocationForm,
     VehicleSelectionForm,
@@ -8,12 +10,13 @@ from .forms import (
     PickupDropoffDateTimeForm,
 )
 from .models import Vehicle, VehicleBookingRequest, Location
-from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class LocationList(LoginRequiredMixin, View):
+class BaseView(LoginRequiredMixin, View):
     login_url = "/login"
+
+
+class LocationList(BaseView):
     TEMPLATE = "rentals/location_menu.html"
     LOCATION_FORM = PickupDropoffLocationForm
 
@@ -35,8 +38,7 @@ class LocationList(LoginRequiredMixin, View):
             return render(request, self.TEMPLATE, {"form": location_form})
 
 
-class VehicleList(LoginRequiredMixin, View):
-    login_url = "/login"
+class VehicleList(BaseView):
     TEMPLATE = "rentals/vehicle_menu.html"
     VEHICLE_FORM = VehicleSelectionForm
 
@@ -57,8 +59,7 @@ class VehicleList(LoginRequiredMixin, View):
             return render(request, self.TEMPLATE, {"form": vehicle_form})
 
 
-class UserRegister(LoginRequiredMixin, View):
-    login_url = "/login"
+class UserRegister(BaseView):
     TEMPLATE = "rentals/register_user.html"
     USER_FORM = UserForm
     PROFILE_FORM = ProfileForm
@@ -132,8 +133,7 @@ class UserRegister(LoginRequiredMixin, View):
             )
 
 
-class HomeView(LoginRequiredMixin, View):
-    login_url = "/login"
+class HomeView(BaseView):
     TEMPLATE = "rentals/home.html"
 
     def get(self, request):
