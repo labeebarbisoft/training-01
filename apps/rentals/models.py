@@ -124,4 +124,37 @@ class VehicleBookingRequest(models.Model):
     )
 
     def __str__(self):
-        return f"From {self.pickup_location} to {self.dropoff_location} with {self.driver} on {self.vehicle}"
+        return (
+            f"From {self.pickup_location} to {self.dropoff_location} on {self.vehicle}"
+        )
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            super().save(*args, **kwargs)
+        else:
+            previous_instance = VehicleBookingRequest.objects.get(pk=self.pk)
+
+            if self.status != previous_instance.status:
+                StatusChangeNotification.objects.create(
+                    booking_request=self,
+                    customer=self.customer,
+                    # status=self.status,
+                )
+            super().save(*args, **kwargs)
+
+
+class StatusChangeNotification(models.Model):
+    booking_request = models.ForeignKey(
+        VehicleBookingRequest,
+        on_delete=models.CASCADE,
+        related_name="status_changes",
+    )
+    customer = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name="notifications",
+    )
+    status_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Ride: {self.booking_request} | Status: {self.booking_request.status}"

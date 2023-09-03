@@ -6,6 +6,7 @@ from .models import (
     VehicleCategory,
     Location,
     FareRate,
+    StatusChangeNotification,
 )
 
 
@@ -14,5 +15,6 @@ admin.site.register(VehicleBookingRequest)
 admin.site.register(VehicleCategory)
 admin.site.register(Location)
 admin.site.register(FareRate)
+admin.site.register(StatusChangeNotification)
 admin.site.unregister(User)
 admin.site.register(User)
