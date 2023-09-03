@@ -141,6 +141,7 @@ class HomeView(BaseView):
         field_names = [
             field.verbose_name.capitalize().replace("_", " ")
             for field in booked_rides_model._meta.get_fields()
+            if not field.is_relation
         ]
         field_names.pop()
         context = {
@@ -148,3 +149,12 @@ class HomeView(BaseView):
             "objs": user.profile.booked_rides.values,
         }
         return render(request, self.TEMPLATE, context)
+
+
+class MessagesView(BaseView):
+    TEMPLATE = "rentals/messages.html"
+
+    def get(self, request):
+        user = request.user
+        notifications = user.profile.notifications.all()
+        return render(request, self.TEMPLATE, {"notifications": notifications})

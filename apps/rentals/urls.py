@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LocationList, VehicleList, UserRegister, HomeView
+from .views import LocationList, VehicleList, UserRegister, HomeView, MessagesView
 from . import views
 
 urlpatterns = [
@@ -7,4 +7,5 @@ urlpatterns = [
     path("vehicle_list", VehicleList.as_view(), name="vehicle_menu"),
     path("register_user", UserRegister.as_view(), name="register_user"),
     path("home", HomeView.as_view(), name="home"),
+    path("messages", MessagesView.as_view(), name="messages"),
 ]
