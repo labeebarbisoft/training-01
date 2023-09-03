@@ -15,6 +15,7 @@
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       crossorigin="anonymous"
     />
+    
     <title>Rent A Vehicle</title>
   </head>
 
@@ -35,11 +36,11 @@
           <a class="nav-item nav-link" href="/home">Home</a>
           <a class="nav-item nav-link" href="/">Book Ride</a>
           <a class="nav-item nav-link" href="/logout">Logout</a>
-          {% with unread_message_count=user.profile.notifications.count %}
+          {% with unread_message_count=user.profile.unread_notification_count %}
               <a class="nav-item nav-link" href="/messages">
                   Messages
                   {% if unread_message_count > 0 %}
-                      <span class="unread-badge">{{ unread_message_count }}</span>
+                      <span class="badge badge-danger">{{ unread_message_count }}</span>
                   {% endif %}
               </a>
           {% endwith %}

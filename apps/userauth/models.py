@@ -13,6 +13,9 @@ class Profile(models.Model):
     role = models.CharField(max_length=20, choices=ROLE_TYPES, blank=False)
     contact_number = models.CharField(max_length=20, blank=False)
 
+    def unread_notification_count(self):
+        return self.notifications.filter(status_read=False).count()
+
     def __str__(self):
         return self.user.username
 
