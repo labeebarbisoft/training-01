@@ -138,7 +138,7 @@ class VehicleBookingRequest(models.Model):
                 StatusChangeNotification.objects.create(
                     booking_request=self,
                     customer=self.customer,
-                    # status=self.status,
+                    status=self.status,
                 )
             super().save(*args, **kwargs)
 
@@ -154,7 +154,14 @@ class StatusChangeNotification(models.Model):
         on_delete=models.CASCADE,
         related_name="notifications",
     )
+    STATUS_TYPES = [
+        ("pending", "Pending"),
+        ("approved", "Approved"),
+        ("completed", "Completed"),
+        ("rejected", "Rejected"),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_TYPES)
     status_read = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Ride: {self.booking_request} | Status: {self.booking_request.status}"
+        return f"Ride: {self.booking_request} | Status: {self.status}"

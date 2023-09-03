@@ -3,9 +3,25 @@
 {% block content %}
 
 
-{% for message in notifications %}
-<p>{{ message }}</p>
-{% endfor %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Messages</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for message in unread_notifications %}
+        <tr class="table-primary">
+            <td>{{ message }}</td>
+        </tr>
+        {% endfor %}
+        {% for message in read_notifications %}
+        <tr class="table-secondary">
+            <td>{{ message }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 
 {% endblock %}

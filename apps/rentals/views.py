@@ -156,5 +156,18 @@ class MessagesView(BaseView):
 
     def get(self, request):
         user = request.user
-        notifications = user.profile.notifications.all()
-        return render(request, self.TEMPLATE, {"notifications": notifications})
+        unread_notifications = list(
+            user.profile.notifications.filter(status_read=False)
+        )[::-1]
+        read_notifications = list(user.profile.notifications.filter(status_read=True))[
+            ::-1
+        ]
+        user.profile.notifications.filter(status_read=False).update(status_read=True)
+        return render(
+            request,
+            self.TEMPLATE,
+            {
+                "unread_notifications": unread_notifications,
+                "read_notifications": read_notifications,
+            },
+        )
