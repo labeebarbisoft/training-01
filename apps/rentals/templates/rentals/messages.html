@@ -7,22 +7,7 @@
 
 {% block content %}
 
-<div class="wrapper">
-  <form method="post" action="/submit_rating">
-    {% csrf_token %}
-    <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
-    <div class="rating">
-      <input type="number" name="rating" hidden>
-      <i class='bx bx-star star' style="--i: 0;"></i>
-      <i class='bx bx-star star' style="--i: 1;"></i>
-      <i class='bx bx-star star' style="--i: 2;"></i>
-      <i class='bx bx-star star' style="--i: 3;"></i>
-      <i class='bx bx-star star' style="--i: 4;"></i>
-    </div>
-      <input type="submit" value="Submit">
-    </div>
-  </form>
-</div>
+
 
 <table class="table table-bordered">
     <thead>
@@ -38,19 +23,28 @@
           {% if message.status == "completed" %}
             {% if message.booking_request.reviewed == False %}
               <td>
-                <form method="post" action="/submit_rating">
+                
+
+                <div class="wrapper">
+                  <form method="post" action="/submit_rating">
                     {% csrf_token %}
                     <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
-                    <label for="rating">Rating:</label>
-                    <select id="rating" name="rating">
-                        <option value="5">5</option>
-                        <option value="4">4</option>
-                        <option value="3">3</option>
-                        <option value="2">2</option>
-                        <option value="1">1</option>
-                    </select>
-                    <input type="submit" value="Submit">
-                </form>
+                    <div class="rating">
+                      <input type="number" name="rating" hidden>
+                      <i class='bx bx-star star' style="--i: 0;"></i>
+                      <i class='bx bx-star star' style="--i: 1;"></i>
+                      <i class='bx bx-star star' style="--i: 2;"></i>
+                      <i class='bx bx-star star' style="--i: 3;"></i>
+                      <i class='bx bx-star star' style="--i: 4;"></i>
+                    </div>
+                      <input type="submit" value="Submit">
+                    </div>
+                  </form>
+                </div>
+
+
+
+
               </td>
             {% else %}
               <td>Rating: {{ message.booking_request.rating }}</td>
@@ -77,19 +71,33 @@
           {% if message.status == "completed" %}
             {% if message.booking_request.reviewed == False %}
               <td>
-                <form method="post" action="/submit_rating">
+                
+
+
+                <div class="wrapper">
+                  <form method="post" action="/submit_rating">
                     {% csrf_token %}
                     <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
-                    <label for="rating">Rating:</label>
-                    <select id="rating" name="rating">
-                        <option value="5">5</option>
-                        <option value="4">4</option>
-                        <option value="3">3</option>
-                        <option value="2">2</option>
-                        <option value="1">1</option>
-                    </select>
-                    <input type="submit" value="Submit">
-                </form>
+                    <div class="rating">
+                      <input type="number" name="rating" hidden>
+                      <i class='bx bx-star star' style="--i: 0;"></i>
+                      <i class='bx bx-star star' style="--i: 1;"></i>
+                      <i class='bx bx-star star' style="--i: 2;"></i>
+                      <i class='bx bx-star star' style="--i: 3;"></i>
+                      <i class='bx bx-star star' style="--i: 4;"></i>
+                    </div>
+                      <input type="submit" value="Submit">
+                    </div>
+                  </form>
+                </div>
+
+
+
+
+
+
+
+
               </td>
             {% else %}
               <td>Rating: {{ message.booking_request.rating }}</td>
