@@ -138,12 +138,13 @@ class HomeView(BaseView):
     def get(self, request):
         user = request.user
         booked_rides_model = user.profile.booked_rides.model
-        field_names = [
-            field.verbose_name.capitalize().replace("_", " ")
-            for field in booked_rides_model._meta.get_fields()
-            if not field.is_relation
-        ]
-        field_names.pop()
+        # field_names = [
+        #     field.verbose_name.capitalize().replace("_", " ")
+        #     for field in booked_rides_model._meta.get_fields()
+        #     if not field.is_relation
+        # ]
+        field_names = ["ID", "Pickup", "Dropoff", "Time", "Status", "Vehicle", "Driver"]
+        # field_names.pop()
         context = {
             "field_names": field_names,
             "objs": user.profile.booked_rides.values,
