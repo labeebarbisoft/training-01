@@ -2,70 +2,88 @@
 
 {% block content %}
 
-
-<table class="table">
+<table class="table table-bordered">
     <thead>
       <tr>
         <th scope="col">Messages</th>
       </tr>
     </thead>
     <tbody>
-        {% for message in unread_notifications %}
-        <tr class="table-primary">
-            <td>{{ message }}</td>
-            <br>
-            {% if message.status == "completed" %}
-              {% if message.booking_request.reviewed == False %}
-                <td>
-                  <form method="post" action="/submit_rating">
-                      {% csrf_token %}
-                      <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
-                      <label for="rating">Rating:</label>
-                      <select id="rating" name="rating">
-                          <option value="5">5</option>
-                          <option value="4">4</option>
-                          <option value="3">3</option>
-                          <option value="2">2</option>
-                          <option value="1">1</option>
-                      </select>
-                      <input type="submit" value="Submit">
-                  </form>
-                </td>
-              {% else %}
-                <td>Rating: {{ message.booking_request.rating }}</td>
-              {% endif %}
+      {% for message in unread_notifications %}
+      <tr class="table-primary">
+          <td>{{ message }}</td>
+          
+          {% if message.status == "completed" %}
+            {% if message.booking_request.reviewed == False %}
+              <td>
+                <form method="post" action="/submit_rating">
+                    {% csrf_token %}
+                    <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
+                    <label for="rating">Rating:</label>
+                    <select id="rating" name="rating">
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                    </select>
+                    <input type="submit" value="Submit">
+                </form>
+              </td>
+            {% else %}
+              <td>Rating: {{ message.booking_request.rating }}</td>
             {% endif %}
-        </tr>
-        {% endfor %}
-        {% for message in read_notifications %}
-        <tr class="table-secondary">
-            <td>{{ message }}</td>
-            <br>
-            {% if message.status == "completed" %}
-              {% if message.booking_request.reviewed == False %}
-                <td>
-                  <form method="post" action="/submit_rating">
-                      {% csrf_token %}
-                      <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
-                      <label for="rating">Rating:</label>
-                      <select id="rating" name="rating">
-                          <option value="5">5</option>
-                          <option value="4">4</option>
-                          <option value="3">3</option>
-                          <option value="2">2</option>
-                          <option value="1">1</option>
-                      </select>
-                      <input type="submit" value="Submit">
-                  </form>
-                </td>
-              {% else %}
-                <td>Rating: {{ message.booking_request.rating }}</td>
-              {% endif %}
-            
+          {% elif message.booking_request.status == "approved" %}
+          <td>
+            <form method="post" action="/mark_complete">
+                {% csrf_token %}
+                <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
+                <input type="submit" value="Mark as complete">
+            </form>
+          </td>
+          {% endif %}
+      </tr>
+      {% endfor %}
+
+
+
+      {% for message in read_notifications %}
+      <tr class="table-secondary">
+          <td>{{ message }}</td>
+          
+
+          {% if message.status == "completed" %}
+            {% if message.booking_request.reviewed == False %}
+              <td>
+                <form method="post" action="/submit_rating">
+                    {% csrf_token %}
+                    <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
+                    <label for="rating">Rating:</label>
+                    <select id="rating" name="rating">
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                    </select>
+                    <input type="submit" value="Submit">
+                </form>
+              </td>
+            {% else %}
+              <td>Rating: {{ message.booking_request.rating }}</td>
             {% endif %}
-        </tr>
-        {% endfor %}
-    </tbody>
+          {% elif message.booking_request.status == "approved" %}
+            <td>
+              <form method="post" action="/mark_complete">
+                  {% csrf_token %}
+                  <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
+                  <input type="submit" value="Mark as complete">
+              </form>
+            </td>
+          {% endif %}
+      </tr>
+      {% endfor %}
+  </tbody>
 </table>
 
 

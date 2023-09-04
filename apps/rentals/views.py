@@ -171,8 +171,16 @@ class SubmitRating(BaseView):
     def post(self, request):
         booking_request_id = request.POST.get("booking_request_id")
         booking_request = VehicleBookingRequest.objects.get(pk=booking_request_id)
-        print(booking_request)
         booking_request.reviewed = True
         booking_request.rating = request.POST.get("rating")
+        booking_request.save()
+        return redirect("messages")
+
+
+class MarkComplete(BaseView):
+    def post(self, request):
+        booking_request_id = request.POST.get("booking_request_id")
+        booking_request = VehicleBookingRequest.objects.get(pk=booking_request_id)
+        booking_request.status = "completed"
         booking_request.save()
         return redirect("messages")

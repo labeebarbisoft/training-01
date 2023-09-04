@@ -6,6 +6,7 @@ from .views import (
     HomeView,
     MessagesView,
     SubmitRating,
+    MarkComplete,
 )
 from . import views
 
@@ -16,4 +17,5 @@ urlpatterns = [
     path("home", HomeView.as_view(), name="home"),
     path("messages", MessagesView.as_view(), name="messages"),
     path("submit_rating", SubmitRating.as_view(), name="submit_rating"),
+    path("mark_complete", MarkComplete.as_view(), name="mark_complete"),
 ]

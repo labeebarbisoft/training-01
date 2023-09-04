@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from apps.userauth.models import Profile
+from django.http import Http404
 
 
 class VehicleCategory(models.Model):
@@ -138,6 +139,17 @@ class VehicleBookingRequest(models.Model):
             super().save(*args, **kwargs)
         else:
             previous_instance = VehicleBookingRequest.objects.get(pk=self.pk)
+
+            if self.status == previous_instance.status:
+                pass
+            elif previous_instance.status == "pending":
+                if not (self.status == "rejected" or self.status == "approved"):
+                    raise Http404("Invalid Operation")
+            elif previous_instance.status == "approved":
+                if not self.status == "completed":
+                    raise Http404("Invalid Operation")
+            else:
+                raise Http404("Invalid Operation")
 
             if self.status != previous_instance.status:
                 StatusChangeNotification.objects.create(
