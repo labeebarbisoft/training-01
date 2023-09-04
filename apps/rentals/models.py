@@ -127,6 +127,7 @@ class VehicleBookingRequest(models.Model):
     rating = models.PositiveIntegerField(
         choices=[(i, i) for i in range(1, 6)],
         null=True,
+        blank=True,
     )
 
     def __str__(self):
