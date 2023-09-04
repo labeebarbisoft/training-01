@@ -137,14 +137,7 @@ class HomeView(BaseView):
 
     def get(self, request):
         user = request.user
-        booked_rides_model = user.profile.booked_rides.model
-        # field_names = [
-        #     field.verbose_name.capitalize().replace("_", " ")
-        #     for field in booked_rides_model._meta.get_fields()
-        #     if not field.is_relation
-        # ]
         field_names = ["ID", "Pickup", "Dropoff", "Time", "Status", "Vehicle", "Driver"]
-        # field_names.pop()
         context = {
             "field_names": field_names,
             "objs": user.profile.booked_rides.values,
@@ -172,3 +165,14 @@ class MessagesView(BaseView):
                 "read_notifications": read_notifications,
             },
         )
+
+
+class SubmitRating(BaseView):
+    def post(self, request):
+        booking_request_id = request.POST.get("booking_request_id")
+        booking_request = VehicleBookingRequest.objects.get(pk=booking_request_id)
+        print(booking_request)
+        booking_request.reviewed = True
+        booking_request.rating = request.POST.get("rating")
+        booking_request.save()
+        return redirect("messages")

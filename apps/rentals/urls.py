@@ -1,5 +1,12 @@
 from django.urls import path
-from .views import LocationList, VehicleList, UserRegister, HomeView, MessagesView
+from .views import (
+    LocationList,
+    VehicleList,
+    UserRegister,
+    HomeView,
+    MessagesView,
+    SubmitRating,
+)
 from . import views
 
 urlpatterns = [
@@ -8,4 +15,5 @@ urlpatterns = [
     path("register_user", UserRegister.as_view(), name="register_user"),
     path("home", HomeView.as_view(), name="home"),
     path("messages", MessagesView.as_view(), name="messages"),
+    path("submit_rating", SubmitRating.as_view(), name="submit_rating"),
 ]

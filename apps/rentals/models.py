@@ -122,6 +122,11 @@ class VehicleBookingRequest(models.Model):
         null=True,
         related_name="booked_rides",
     )
+    reviewed = models.BooleanField(default=False)
+    rating = models.PositiveIntegerField(
+        choices=[(i, i) for i in range(1, 6)],
+        null=True,
+    )
 
     def __str__(self):
         return (
