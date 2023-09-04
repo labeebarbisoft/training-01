@@ -51,7 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "apps.userauth.middleware.PreventDriverLoginMiddleware",
+    "apps.userauth.middleware.PreventDriverLoginMiddleware",
 ]
 
 ROOT_URLCONF = "rentavehicle.urls"
