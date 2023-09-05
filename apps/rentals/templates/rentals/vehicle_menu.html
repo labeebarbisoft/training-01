@@ -1,8 +1,14 @@
 {% extends "rentals/base.html" %}
+{% load static %}
 
 {% load crispy_forms_tags %}
 
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'rating.css' %}">
+{% endblock %}
+
 {% block content %}
+
 
 <form action="" method="post" novalidate>
     {% csrf_token %}
@@ -11,5 +17,18 @@
     <button type="submit" class="btn btn-primary">Next</button>
     </div>
 </form>
+
+<img id="model-image" src="">
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+    var image_paths = {{ paths|safe }}; 
+    console.log(image_paths)
+</script>
+
+<script src="{% static 'rating.js' %}"></script>
 
 {% endblock %}

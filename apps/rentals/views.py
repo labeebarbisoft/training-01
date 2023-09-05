@@ -10,6 +10,7 @@ from .forms import (
     PickupDropoffDateTimeForm,
 )
 from .models import Vehicle, VehicleBookingRequest, Location
+from django.conf import settings
 
 
 class BaseView(LoginRequiredMixin, View):
@@ -42,12 +43,17 @@ class VehicleList(BaseView):
     TEMPLATE = "rentals/vehicle_menu.html"
     VEHICLE_FORM = VehicleSelectionForm
 
+    image_paths = []
+    instances = Vehicle.objects.all()
+    for instance in instances:
+        image_paths.append(settings.STATIC_URL + instance.image_path)
+
     def get(self, request):
         vehicle_form = self.VEHICLE_FORM()
         return render(
             request,
             self.TEMPLATE,
-            {"form": vehicle_form},
+            {"form": vehicle_form, "paths": self.image_paths},
         )
 
     def post(self, request):
@@ -56,7 +62,11 @@ class VehicleList(BaseView):
             request.session["vehicle"] = vehicle_form.cleaned_data["selected_car"].pk
             return redirect("register_user")
         else:
-            return render(request, self.TEMPLATE, {"form": vehicle_form})
+            return render(
+                request,
+                self.TEMPLATE,
+                {"form": vehicle_form, "paths": self.image_paths},
+            )
 
 
 class UserRegister(BaseView):

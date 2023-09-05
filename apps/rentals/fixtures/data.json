@@ -27,7 +27,8 @@
         "category": 1,
         "fuel_type": "gasoline",
         "seating_capacity": 12,
-        "is_active": true
+        "is_active": true,
+        "image_path": "/images/sedan.jpg"
       }
     },
     {
@@ -36,18 +37,20 @@
       "fields": {
         "category": 1,
         "fuel_type": "gasoline",
-        "seating_capacity": 14,
-        "is_active": true
+        "seating_capacity": 12,
+        "is_active": true,
+        "image_path": "/images/sedan.jpg"
       }
     },
     {
       "model": "rentals.Vehicle",
       "pk": 3,
       "fields": {
-        "category": 1,
+        "category": 2,
         "fuel_type": "gasoline",
         "seating_capacity": 16,
-        "is_active": true
+        "is_active": true,
+        "image_path": "/images/coaster.jpg"
       }
     },
     {
@@ -56,38 +59,31 @@
       "fields": {
         "category": 2,
         "fuel_type": "gasoline",
-        "seating_capacity": 18,
-        "is_active": true
+        "seating_capacity": 16,
+        "is_active": true,
+        "image_path": "/images/coaster.jpg"
       }
     },
     {
       "model": "rentals.Vehicle",
       "pk": 5,
       "fields": {
-        "category": 1,
+        "category": 3,
         "fuel_type": "gasoline",
         "seating_capacity": 20,
-        "is_active": true
-      }
-    },
-    {
-      "model": "rentals.Vehicle",
-      "pk": 5,
-      "fields": {
-        "category": 1,
-        "fuel_type": "diesel",
-        "seating_capacity": 22,
-        "is_active": true
+        "is_active": true,
+        "image_path": "/images/grand_cabin.jpg"
       }
     },
     {
       "model": "rentals.Vehicle",
       "pk": 6,
       "fields": {
-        "category": 1,
+        "category": 3,
         "fuel_type": "diesel",
-        "seating_capacity": 24,
-        "is_active": false
+        "seating_capacity": 20,
+        "is_active": true,
+        "image_path": "/images/grand_cabin.jpg"
       }
     },
     {
