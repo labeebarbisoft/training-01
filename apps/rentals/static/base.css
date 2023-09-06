@@ -174,3 +174,30 @@ i {
     top: 10px;
     right: 15px;
   }
+
+.bg {
+ position:relative;
+ width: 100vw;
+ height: 100vw;
+background-image: radial-gradient(circle at 30% 86%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 8%,transparent 8%, transparent 92%),radial-gradient(circle at 55% 100%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 8%,transparent 8%, transparent 92%),radial-gradient(circle at 40% 75%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 6%,transparent 6%, transparent 94%),radial-gradient(circle at 7% 99%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 6%,transparent 6%, transparent 94%),radial-gradient(circle at 69% 76%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 6%,transparent 6%, transparent 94%),radial-gradient(circle at 2% 35%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 6%,transparent 6%, transparent 94%),radial-gradient(circle at 14% 48%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 6%,transparent 6%, transparent 94%),radial-gradient(circle at 28% 87%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.04) 4%,transparent 4%, transparent 96%),radial-gradient(circle at 65% 14%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.04) 4%,transparent 4%, transparent 96%),radial-gradient(circle at 51% 36%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.04) 4%,transparent 4%, transparent 96%),radial-gradient(circle at 6% 93%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.04) 4%,transparent 4%, transparent 96%),linear-gradient(135deg, rgb(23, 233, 173),rgb(29, 24, 208));
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+
+.main-container {
+    position: absolute;
+    top: 100px;
+    width: 800px; /* Set the width of the card */
+    padding: 20px; /* Add some padding to the card */
+    background: linear-gradient(45deg, #f2f1ef, #eee8d5); /* Define the gradient background */
+    border-radius: 10px; /* Add rounded corners to the card */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add a shadow to the card */
+}
+
+/* Style the card content */
+.main-container {
+    color: #000000; /* Set the text color to white */
+    text-align: center; /* Center-align text inside the card */
+}
