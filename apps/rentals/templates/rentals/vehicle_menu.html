@@ -12,23 +12,29 @@
 
 <form action="" method="post" novalidate>
     {% csrf_token %}
-    {{ form|crispy }}
+    
+    <div class="container">
+        <div class="row">
+            {% for vehicle in form.selected_car.field.queryset %}
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <p>{{ static }}</p>
+                    <img src="{% static vehicle.image_path %}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ vehicle.category }}</h5>
+                        <p class="card-text">Seating Capacity: {{ vehicle.seating_capacity }}</p>
+                        <input type="radio" id="{{ vehicle.id }}" name="selected_car" value="{{ vehicle.id }}">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+
     <div class="col-auto my-1">
     <button type="submit" class="btn btn-primary">Next</button>
     </div>
 </form>
-
-<img id="model-image" src="">
-
-{% endblock %}
-
-{% block extra_js %}
-
-<script>
-    var image_paths = {{ paths|safe }}; 
-    console.log(image_paths)
-</script>
-
-<script src="{% static 'rating.js' %}"></script>
 
 {% endblock %}

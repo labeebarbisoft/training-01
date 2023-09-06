@@ -43,20 +43,17 @@ class VehicleList(BaseView):
     TEMPLATE = "rentals/vehicle_menu.html"
     VEHICLE_FORM = VehicleSelectionForm
 
-    image_paths = []
-    instances = Vehicle.objects.all()
-    for instance in instances:
-        image_paths.append(settings.STATIC_URL + instance.image_path)
-
     def get(self, request):
         vehicle_form = self.VEHICLE_FORM()
         return render(
             request,
             self.TEMPLATE,
-            {"form": vehicle_form, "paths": self.image_paths},
+            {"form": vehicle_form},
         )
 
     def post(self, request):
+        print("here")
+
         vehicle_form = self.VEHICLE_FORM(request.POST)
         if vehicle_form.is_valid():
             request.session["vehicle"] = vehicle_form.cleaned_data["selected_car"].pk
@@ -65,7 +62,7 @@ class VehicleList(BaseView):
             return render(
                 request,
                 self.TEMPLATE,
-                {"form": vehicle_form, "paths": self.image_paths},
+                {"form": vehicle_form},
             )
 
 

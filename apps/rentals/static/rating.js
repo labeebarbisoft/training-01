@@ -21,13 +21,3 @@ allStar.forEach((item, idx)=> {
 		}
 	})
 })
-
-
-$(document).ready(function () {
-	$('#model-select').change(function () {
-		var selectedModelId = $(this).val() - 1;
-		var selectedPath = image_paths[selectedModelId]
-		console.log(selectedPath)
-		$('#model-image').attr('src', selectedPath);
-	});
-});
