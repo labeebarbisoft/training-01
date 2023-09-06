@@ -194,3 +194,8 @@ class MarkComplete(BaseView):
         booking_request.status = "completed"
         booking_request.save()
         return redirect("messages")
+
+
+class Extra(BaseView):
+    def get(self, request):
+        return redirect("home/")

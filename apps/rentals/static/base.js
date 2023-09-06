@@ -73,5 +73,11 @@ $(window).on('load',function () {
         }else{
             $this.parent().removeClass('active');
         }
+
+		// Special case: Highlight "Book Ride" when on the "vehicle_list/" page
+        if ((current === '/vehicle_list/' || current === '/register_user/') && href === '/') {
+            $this.parent().addClass('active');
+            // Add any additional actions you need for this case
+        }
     })
 });
