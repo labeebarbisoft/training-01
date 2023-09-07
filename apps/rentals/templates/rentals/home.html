@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-        {% for field in user.profile.booked_rides.all %}
+        {% for field in booked_rides %}
       <tr>
             <th scope="row">{{ field.id }}</th>
             <td>{{ field.pickup_location }}</td>

@@ -1,14 +1,13 @@
 {% extends "rentals/base.html" %}
 {% load static %}
 
+
 {% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'rating.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'messages.css' %}">
 {% endblock %}
 
+
 {% block content %}
-
-
-
 <table class="table table-bordered">
     <thead>
       <tr>
@@ -16,109 +15,57 @@
       </tr>
     </thead>
     <tbody>
-      {% for message in unread_notifications %}
-      <tr class="table-primary">
-          <td>{{ message }}</td>
-          
+      {% for message in notifications %}
+      <tr class="
+          {% if message.status_read == False %}
+          table-primary
+          {% else %}
+          table-secondary
+          {% endif %}">
+          <td>{{ message }}
           {% if message.status == "completed" %}
             {% if message.booking_request.reviewed == False %}
-              <td>
-                
-
-                <div class="wrapper">
-                  <form method="post" action="/submit_rating">
-                    {% csrf_token %}
-                    <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
-                    <div class="rating">
-                      <input type="number" name="rating" hidden>
-                      <i class='bx bx-star star' style="--i: 0;"></i>
-                      <i class='bx bx-star star' style="--i: 1;"></i>
-                      <i class='bx bx-star star' style="--i: 2;"></i>
-                      <i class='bx bx-star star' style="--i: 3;"></i>
-                      <i class='bx bx-star star' style="--i: 4;"></i>
-                    </div>
-                      <input type="submit" value="Submit">
-                    </div>
-                  </form>
-                </div>
-
-
-
-
-              </td>
-            {% else %}
-              <td>Rating: {{ message.booking_request.rating }}</td>
-            {% endif %}
-          {% elif message.booking_request.status == "approved" %}
-          <td>
-            <form method="post" action="/mark_complete">
+              <form method="post" action="/submit_rating">
                 {% csrf_token %}
                 <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
-                <input type="submit" value="Mark as complete">
-            </form>
-          </td>
-          {% endif %}
-      </tr>
-      {% endfor %}
-
-
-
-      {% for message in read_notifications %}
-      <tr class="table-secondary">
-          <td>{{ message }}</td>
-          
-
-          {% if message.status == "completed" %}
-            {% if message.booking_request.reviewed == False %}
-              <td>
-                
-
-
-                <div class="wrapper">
-                  <form method="post" action="/submit_rating">
-                    {% csrf_token %}
-                    <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
-                    <div class="rating">
-                      <input type="number" name="rating" hidden>
-                      <i class='bx bx-star star' style="--i: 0;"></i>
-                      <i class='bx bx-star star' style="--i: 1;"></i>
-                      <i class='bx bx-star star' style="--i: 2;"></i>
-                      <i class='bx bx-star star' style="--i: 3;"></i>
-                      <i class='bx bx-star star' style="--i: 4;"></i>
-                    </div>
-                      <input type="submit" value="Submit">
-                    </div>
-                  </form>
+                <div class="rating">
+                  <input type="number" name="rating" hidden>
+                  <i class='bx bx-star star' style="--i: 0;"></i>
+                  <i class='bx bx-star star' style="--i: 1;"></i>
+                  <i class='bx bx-star star' style="--i: 2;"></i>
+                  <i class='bx bx-star star' style="--i: 3;"></i>
+                  <i class='bx bx-star star' style="--i: 4;"></i>
                 </div>
-
-
-
-
-
-
-
-
-              </td>
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                </div>
+              </form>
+          </td>
             {% else %}
-              <td>Rating: {{ message.booking_request.rating }}</td>
+                  
+              <div class="rating">
+                {% with ''|center:message.booking_request.rating as range %}
+                  {% for _ in range %}
+                    <i class='bx active bxs-star' style="--i: 1;"></i>
+                  {% endfor %}
+                  {% endwith %}
+              </div>
+          </td>
             {% endif %}
           {% elif message.booking_request.status == "approved" %}
-            <td>
               <form method="post" action="/mark_complete">
                   {% csrf_token %}
                   <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">
-                  <input type="submit" value="Mark as complete">
+                  <input type="submit" class="btn btn-primary" value="Mark as complete">
               </form>
-            </td>
+          </td>
           {% endif %}
       </tr>
       {% endfor %}
   </tbody>
 </table>
-
-
 {% endblock %}
 
+
 {% block extra_js %}
-    <script src="{% static 'rating.js' %}"></script>
+    <script src="{% static 'messages.js' %}"></script>
 {% endblock %}
