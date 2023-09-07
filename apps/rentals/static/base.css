@@ -11,6 +11,9 @@ i {
 	margin-right: 10px;
 }
 /*----------bootstrap-navbar-css------------*/
+.navbar{
+	padding-bottom: 0px !important;
+}
 .navbar-logo{
 	padding: 15px;
 	color: #fff;
