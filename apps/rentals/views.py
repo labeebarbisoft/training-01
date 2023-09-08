@@ -53,6 +53,7 @@ class VehicleList(BaseView):
         fare_rates = FareRate.objects.filter(
             pickup=request.session["pickup_location"],
             dropoff=request.session["dropoff_location"],
+            vehicle__is_active=True,
         )
         return render(
             request,
