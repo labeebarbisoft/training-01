@@ -14,19 +14,10 @@ from django.http import Http404
 
 
 class VehicleCategory(models.Model):
-    VEHICLE_CATEGORY_TYPES = [
-        ("sedan", "Sedan"),
-        ("coaster", "Coaster"),
-        ("grand_cabin", "Grand Cabin"),
-    ]
-    category = models.CharField(
-        max_length=20,
-        choices=VEHICLE_CATEGORY_TYPES,
-        blank=False,
-    )
+    category = models.CharField(max_length=20, blank=False)
 
     def __str__(self):
-        return dict(self.VEHICLE_CATEGORY_TYPES)[self.category]
+        return self.category
 
 
 class Vehicle(models.Model):
@@ -157,7 +148,7 @@ class VehicleBookingRequest(models.Model):
                 StatusChangeNotification.objects.create(
                     booking_request=self,
                     customer=self.customer,
-                    status=self.status,
+                    booking_status=self.status,
                 )
             super().save(*args, **kwargs)
 
@@ -173,14 +164,23 @@ class StatusChangeNotification(models.Model):
         on_delete=models.CASCADE,
         related_name="notifications",
     )
-    STATUS_TYPES = [
+    BOOKING_STATUS_TYPES = [
         ("pending", "Pending"),
         ("approved", "Approved"),
         ("completed", "Completed"),
         ("rejected", "Rejected"),
     ]
-    status = models.CharField(max_length=20, choices=STATUS_TYPES)
-    status_read = models.BooleanField(default=False)
+    booking_status = models.CharField(max_length=20, choices=BOOKING_STATUS_TYPES)
+    NOTIFICATION_STATUS_TYPES = [
+        ("pending", "Pending"),
+        ("delivered", "Delivered"),
+        ("read", "Read"),
+    ]
+    notification_status = models.CharField(
+        max_length=20,
+        choices=NOTIFICATION_STATUS_TYPES,
+        default="delivered",
+    )
 
     def __str__(self):
-        return f"Ride: {self.booking_request} | Status: {self.status}"
+        return f"Ride: {self.booking_request} | Status: {dict(self.BOOKING_STATUS_TYPES)[self.booking_status]}"

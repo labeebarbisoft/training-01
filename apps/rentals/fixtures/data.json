@@ -3,21 +3,21 @@
       "model": "rentals.VehicleCategory",
       "pk": 1,
       "fields": {
-        "category": "sedan"
+        "category": "Sedan"
       }
     }, 
     {
       "model": "rentals.VehicleCategory",
       "pk": 2,
       "fields": {
-        "category": "coaster"
+        "category": "Coaster"
       }
     },   
     {
       "model": "rentals.VehicleCategory",
       "pk": 3,
       "fields": {
-        "category": "grand_cabin"
+        "category": "Grand Cabin"
       }
     },
     {

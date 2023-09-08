@@ -145,7 +145,7 @@ class HomeView(BaseView):
     def get(self, request):
         user = request.user
         field_names = ["ID", "Pickup", "Dropoff", "Time", "Status", "Vehicle", "Driver"]
-        booked_rides = list(user.profile.booked_rides.all())[::-1]
+        booked_rides = list(user.profile.booked_rides.all().order_by("-id"))
         context = {
             "field_names": field_names,
             "booked_rides": booked_rides,
@@ -158,8 +158,10 @@ class MessagesView(BaseView):
 
     def get(self, request):
         user = request.user
-        notifications = list(user.profile.notifications.all())[::-1]
-        user.profile.notifications.filter(status_read=False).update(status_read=True)
+        notifications = list(user.profile.notifications.all().order_by("-id"))
+        user.profile.notifications.filter(notification_status="delivered").update(
+            notification_status="read"
+        )
         return render(
             request,
             self.TEMPLATE,

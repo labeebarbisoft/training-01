@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "apps.userauth.apps.UserauthConfig",
     "crispy_forms",
     "crispy_bootstrap4",
+    "mathfilters",
 ]
 
 MIDDLEWARE = [

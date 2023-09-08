@@ -1,5 +1,6 @@
 {% extends "rentals/base.html" %}
 {% load static %}
+{% load mathfilters %}
 
 
 {% block extra_css %}
@@ -8,6 +9,7 @@
 
 
 {% block content %}
+{% if notifications %}
 <table class="table table-bordered">
     <thead>
       <tr>
@@ -17,13 +19,13 @@
     <tbody>
       {% for message in notifications %}
       <tr class="
-          {% if message.status_read == False %}
+          {% if message.notification_status != 'read' %}
           table-primary
           {% else %}
           table-secondary
           {% endif %}">
           <td>{{ message }}
-          {% if message.status == "completed" %}
+          {% if message.booking_status == "completed" %}
             {% if message.booking_request.reviewed == False %}
               <form method="post" action="/submit_rating">
                 {% csrf_token %}
@@ -41,12 +43,18 @@
               </form>
           </td>
             {% else %}
-                  
               <div class="rating">
                 {% with ''|center:message.booking_request.rating as range %}
                   {% for _ in range %}
                     <i class='bx active bxs-star' style="--i: 1;"></i>
                   {% endfor %}
+                  {% endwith %}
+                  {% with 5|sub:message.booking_request.rating as difference %}
+                  {% with ''|center:difference as range %}
+                  {% for _ in range %}
+                    <i class='bx bx-star star' style="--i: 1;"></i>
+                  {% endfor %}
+                  {% endwith %}
                   {% endwith %}
               </div>
           </td>
@@ -63,6 +71,9 @@
       {% endfor %}
   </tbody>
 </table>
+{% else %}
+<h1>No notifications yet!</h1>
+{% endif %}
 {% endblock %}
 
 

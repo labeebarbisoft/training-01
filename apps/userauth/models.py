@@ -14,7 +14,7 @@ class Profile(models.Model):
     contact_number = models.CharField(max_length=20, blank=False)
 
     def unread_notification_count(self):
-        return self.notifications.filter(status_read=False).count()
+        return self.notifications.exclude(notification_status="read").count()
 
     def __str__(self):
         return self.user.username
