@@ -20,10 +20,6 @@ class PickupDropoffDateTimeForm(forms.Form):
         widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
         required=True,
     )
-    from django import forms
-
-
-from django.utils import timezone
 
 
 class PickupDropoffDateTimeForm(forms.Form):
