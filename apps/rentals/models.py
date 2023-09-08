@@ -54,27 +54,51 @@ class FareRate(models.Model):
         related_name="dropoff_fares",
         on_delete=models.CASCADE,
     )
+    vehicle = models.ForeignKey(
+        Vehicle,
+        related_name="vehicle_fares",
+        on_delete=models.CASCADE,
+    )
     fare = models.IntegerField(blank=False)
 
     def __str__(self):
-        return f"{self.pickup} -> {self.dropoff} | Fare: {self.fare}"
+        return f"{self.pickup} -> {self.dropoff} on {self.vehicle} | Fare: {self.fare}"
 
 
 @receiver(post_save, sender=Location)
 def create_fare_entries(sender, instance, created, **kwargs):
     if created:
         all_locations = Location.objects.exclude(pk=instance.pk)
-        for other_location in all_locations:
-            FareRate.objects.create(
-                pickup=instance,
-                dropoff=other_location,
-                fare=len(str(other_location)) + len(str(instance)),
-            )
-            FareRate.objects.create(
-                pickup=other_location,
-                dropoff=instance,
-                fare=len(str(other_location)) + len(str(instance)),
-            )
+        all_vehicles = Vehicle.objects.all()
+        for vehicle in all_vehicles:
+            for other_location in all_locations:
+                FareRate.objects.create(
+                    pickup=instance,
+                    dropoff=other_location,
+                    vehicle=vehicle,
+                    fare=len(str(other_location)) + len(str(instance)),
+                )
+                FareRate.objects.create(
+                    pickup=other_location,
+                    dropoff=instance,
+                    vehicle=vehicle,
+                    fare=len(str(other_location)) + len(str(instance)),
+                )
+
+
+@receiver(post_save, sender=Vehicle)
+def create_fare_entries_for_new_vehicle(sender, instance, created, **kwargs):
+    if created:
+        all_locations = Location.objects.all()
+        for pickup_location in all_locations:
+            for dropoff_location in all_locations:
+                if pickup_location != dropoff_location:
+                    FareRate.objects.create(
+                        pickup=pickup_location,
+                        dropoff=dropoff_location,
+                        vehicle=instance,
+                        fare=len(str(pickup_location)) + len(str(dropoff_location)),
+                    )
 
 
 class VehicleBookingRequest(models.Model):

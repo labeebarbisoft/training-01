@@ -9,7 +9,7 @@ from .forms import (
     ProfileForm,
     PickupDropoffDateTimeForm,
 )
-from .models import Vehicle, VehicleBookingRequest, Location
+from .models import Vehicle, VehicleBookingRequest, Location, FareRate
 from django.conf import settings
 
 
@@ -34,9 +34,19 @@ class LocationList(BaseView):
             request.session["dropoff_location"] = location_form.cleaned_data[
                 "dropoff_location"
             ].pk
-            return redirect("vehicle_menu")
+            fare_rates = FareRate.objects.filter(
+                pickup=request.session["pickup_location"],
+                dropoff=request.session["dropoff_location"],
+            )
+            return render(
+                request, "rentals/vehicle_menu.html", {"fare_rates": fare_rates}
+            )
         else:
-            return render(request, self.TEMPLATE, {"form": location_form})
+            return render(
+                request,
+                self.TEMPLATE,
+                {"form": location_form},
+            )
 
 
 class VehicleList(BaseView):
@@ -52,8 +62,6 @@ class VehicleList(BaseView):
         )
 
     def post(self, request):
-        print("here")
-
         vehicle_form = self.VEHICLE_FORM(request.POST)
         if vehicle_form.is_valid():
             request.session["vehicle"] = vehicle_form.cleaned_data["selected_car"].pk
@@ -122,7 +130,6 @@ class UserRegister(BaseView):
                 pickup_datetime=datetime_form.cleaned_data["pickup_time"],
                 status="pending",
                 vehicle=Vehicle.objects.get(pk=request.session["vehicle"]),
-                # driver=1,
                 customer=user.profile,
             )
             ride_request.save()

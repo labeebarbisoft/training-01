@@ -35,52 +35,19 @@
       "model": "rentals.Vehicle",
       "pk": 2,
       "fields": {
-        "category": 1,
+        "category": 2,
         "fuel_type": "gasoline",
-        "seating_capacity": 12,
+        "seating_capacity": 16,
         "is_active": true,
-        "image_path": "/images/sedan.jpg"
+        "image_path": "/images/coaster.jpg"
       }
     },
     {
       "model": "rentals.Vehicle",
       "pk": 3,
       "fields": {
-        "category": 2,
-        "fuel_type": "gasoline",
-        "seating_capacity": 16,
-        "is_active": true,
-        "image_path": "/images/coaster.jpg"
-      }
-    },
-    {
-      "model": "rentals.Vehicle",
-      "pk": 4,
-      "fields": {
-        "category": 2,
-        "fuel_type": "gasoline",
-        "seating_capacity": 16,
-        "is_active": true,
-        "image_path": "/images/coaster.jpg"
-      }
-    },
-    {
-      "model": "rentals.Vehicle",
-      "pk": 5,
-      "fields": {
         "category": 3,
         "fuel_type": "gasoline",
-        "seating_capacity": 20,
-        "is_active": true,
-        "image_path": "/images/grand_cabin.jpg"
-      }
-    },
-    {
-      "model": "rentals.Vehicle",
-      "pk": 6,
-      "fields": {
-        "category": 3,
-        "fuel_type": "diesel",
         "seating_capacity": 20,
         "is_active": true,
         "image_path": "/images/grand_cabin.jpg"
@@ -98,29 +65,13 @@
       "model": "rentals.Location",
       "pk": 2,
       "fields": {
-        "title": "Ground",
-        "full_address": "Street Number 66, Canal Road"
-      }
-    },
-    {
-      "model": "rentals.Location",
-      "pk": 3,
-      "fields": {
-        "title": "KFC",
-        "full_address": "22 PP Block, Barkat Market"
-      }
-    },
-    {
-      "model": "rentals.Location",
-      "pk": 4,
-      "fields": {
         "title": "Emporium",
         "full_address": "26 Nice Block, Johar Town"
       }
     },
     {
       "model": "rentals.Location",
-      "pk": 5,
+      "pk": 3,
       "fields": {
         "title": "Gym",
         "full_address": "28 Heavy Block, Muscle Market"
@@ -156,8 +107,8 @@
       "model": "rentals.VehicleBookingRequest",
       "pk": 3,
       "fields": {
-        "pickup_location": 4,
-        "dropoff_location": 5,
+        "pickup_location": 2,
+        "dropoff_location": 3,
         "pickup_datetime": "2023-08-28T12:00:00Z",
         "status": "pending",
         "vehicle": 3,
@@ -169,11 +120,11 @@
       "model": "rentals.VehicleBookingRequest",
       "pk": 4,
       "fields": {
-        "pickup_location": 5,
+        "pickup_location": 2,
         "dropoff_location": 1,
         "pickup_datetime": "2023-08-28T12:00:00Z",
         "status": "pending",
-        "vehicle": 4,
+        "vehicle": 1,
         "driver": 4,
         "customer": 9
       }
@@ -182,11 +133,11 @@
       "model": "rentals.VehicleBookingRequest",
       "pk": 5,
       "fields": {
-        "pickup_location": 2,
-        "dropoff_location": 3,
+        "pickup_location": 3,
+        "dropoff_location": 1,
         "pickup_datetime": "2023-08-28T12:00:00Z",
         "status": "pending",
-        "vehicle": 5,
+        "vehicle": 2,
         "driver": 5,
         "customer": 10
       }

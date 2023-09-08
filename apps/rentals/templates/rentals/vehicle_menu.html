@@ -5,19 +5,20 @@
     {% csrf_token %} 
     <div class="container">
         <div class="row">
-            {% for vehicle in form.selected_car.field.queryset %}
-            <div class="col-md-6">
-                <div class="card mb-3">
-                    <p>{{ static }}</p>
-                    <img src="{% static vehicle.image_path %}" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ vehicle.category }}</h5>
-                        <p class="card-text">Seating Capacity: {{ vehicle.seating_capacity }}</p>
-                        <input type="radio" id="{{ vehicle.id }}" name="selected_car" value="{{ vehicle.id }}">
+            {% for fare_rate in fare_rates %}
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <img src="{% static fare_rate.vehicle.image_path %}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ fare_rate.vehicle.category }}</h5>
+                            <p class="card-text">Seating Capacity: {{ fare_rate.vehicle.seating_capacity }}</p>
+                            <p class="card-text">Fare: {{ fare_rate.fare }}</p>
+                            <input type="radio" id="{{ vehicle.id }}" name="selected_car" value="{{ vehicle.id }}">
+                        </div>
                     </div>
                 </div>
-            </div>
             {% endfor %}
+            
         </div>
     </div>
     <div class="col-auto my-1">

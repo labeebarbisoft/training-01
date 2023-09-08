@@ -82,7 +82,7 @@ WSGI_APPLICATION = "rentavehicle.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "test",
+        "NAME": "test-01",
         "USER": "postgres",
         "PASSWORD": "123",
         "HOST": "localhost",
