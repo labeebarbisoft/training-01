@@ -1,0 +1,22 @@
+.selected {
+    border: 2px solid skyblue;
+}
+
+.hidden_radio {
+    display: none;
+}
+
+.equal-size-image {
+    width: 354px; 
+    height: 354px; 
+    object-fit: contain;
+}
+
+.error-container {
+    border: 1px solid red;
+    background-color: #ffdddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: red;
+    list-style-type: none; /* Remove bullet points */
+}

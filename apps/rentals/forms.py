@@ -69,5 +69,11 @@ class VehicleSelectionForm(forms.Form):
         label="Selected Vehicle",
         queryset=Vehicle.objects.exclude(is_active=False),
         empty_label="Select vehicle",
-        widget=forms.Select(attrs={"id": "model-select"}),
+        required=False,
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        selected_car = cleaned_data.get("selected_car")
+        if not selected_car:
+            self.add_error("selected_car", "Please select a vehicle.")

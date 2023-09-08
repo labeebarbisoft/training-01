@@ -34,13 +34,8 @@ class LocationList(BaseView):
             request.session["dropoff_location"] = location_form.cleaned_data[
                 "dropoff_location"
             ].pk
-            fare_rates = FareRate.objects.filter(
-                pickup=request.session["pickup_location"],
-                dropoff=request.session["dropoff_location"],
-            )
-            return render(
-                request, "rentals/vehicle_menu.html", {"fare_rates": fare_rates}
-            )
+
+            return redirect("vehicle_menu")
         else:
             return render(
                 request,
@@ -55,10 +50,17 @@ class VehicleList(BaseView):
 
     def get(self, request):
         vehicle_form = self.VEHICLE_FORM()
+        fare_rates = FareRate.objects.filter(
+            pickup=request.session["pickup_location"],
+            dropoff=request.session["dropoff_location"],
+        )
         return render(
             request,
             self.TEMPLATE,
-            {"form": vehicle_form},
+            {
+                "form": vehicle_form,
+                "fare_rates": fare_rates,
+            },
         )
 
     def post(self, request):
@@ -67,10 +69,17 @@ class VehicleList(BaseView):
             request.session["vehicle"] = vehicle_form.cleaned_data["selected_car"].pk
             return redirect("register_user")
         else:
+            fare_rates = FareRate.objects.filter(
+                pickup=request.session["pickup_location"],
+                dropoff=request.session["dropoff_location"],
+            )
             return render(
                 request,
                 self.TEMPLATE,
-                {"form": vehicle_form},
+                {
+                    "form": vehicle_form,
+                    "fare_rates": fare_rates,
+                },
             )
 
 
