@@ -27,7 +27,7 @@ class Vehicle(models.Model):
     fuel_type = models.CharField(max_length=20, choices=FUEL_TYPES, blank=False)
     seating_capacity = models.IntegerField(blank=False)
     is_active = models.BooleanField(blank=False)
-    image_path = models.CharField(max_length=255, default="")
+    image = models.ImageField(upload_to="images/", default=None)
 
     def __str__(self):
         return f"{self.category} {self.seating_capacity} Seater"

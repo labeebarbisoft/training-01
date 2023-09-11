@@ -19,7 +19,7 @@
             {% for fare_rate in fare_rates %}
                 <div class="col-md-6">
                     <div class="card mb-3 card-clickable" data-vehicle-id="{{ fare_rate.vehicle.id }}">
-                        <img src="{% static fare_rate.vehicle.image_path %}" class="card-img-top equal-size-image">
+                        <img src="{{ fare_rate.vehicle.image.url }}" class="card-img-top equal-size-image">
                         <div class="card-body">
                             <h5 class="card-title">{{ fare_rate.vehicle.category }}</h5>
                             <p class="card-text">Seating Capacity: {{ fare_rate.vehicle.seating_capacity }}</p>
