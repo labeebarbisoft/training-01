@@ -19,10 +19,15 @@ admin.site.register(User)
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
     list_display = ("title", "full_address")
+    search_fields = ("title",)
 
 
 @admin.register(VehicleBookingRequest)
 class VehicleBookingRequestAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "status")
+    list_filter = ("pickup_location", "dropoff_location", "vehicle")
+    list_editable = ("status",)
+
     def save_model(self, request, obj, form, change):
         if change:
             print("here")
@@ -41,6 +46,7 @@ class VehicleBookingRequestAdmin(admin.ModelAdmin):
                 valid = False
 
             if valid is False:
+                messages.set_level(request, messages.ERROR)
                 message = f"Invalid operation for object ID {obj.pk}."
                 messages.error(request, message)
             else:
