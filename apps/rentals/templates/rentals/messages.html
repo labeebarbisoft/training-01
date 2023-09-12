@@ -28,6 +28,11 @@
           {% if message.booking_status == "completed" %}
           
             {% if message.booking_request.rating == None %}
+            {% for error in errors %}
+            <p class="rating-error-container">
+              {{ error }}
+            </p>
+            {% endfor %}
               <form method="post" action="/submit_rating">
                 {% csrf_token %}
                 <input type="hidden" name="booking_request_id" value="{{ message.booking_request.id }}">

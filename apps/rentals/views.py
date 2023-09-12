@@ -184,6 +184,8 @@ class MessagesView(BaseView):
 
 
 class SubmitRating(BaseView):
+    TEMPLATE = "rentals/messages.html"
+
     def post(self, request):
         if not request.POST.get("rating") == "":
             booking_request_id = request.POST.get("booking_request_id")
@@ -192,7 +194,19 @@ class SubmitRating(BaseView):
             )
             booking_request.rating = request.POST.get("rating")
             booking_request.save()
-        return redirect("messages")
+            return redirect("messages")
+        else:
+            user = request.user
+            notifications = list(user.profile.notifications.all().order_by("-id"))
+            errors = ["Please select a rating before submitting."]
+            return render(
+                request,
+                self.TEMPLATE,
+                {
+                    "errors": errors,
+                    "notifications": notifications,
+                },
+            )
 
 
 class MarkComplete(BaseView):

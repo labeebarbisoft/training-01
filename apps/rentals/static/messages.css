@@ -88,3 +88,13 @@ textarea {
 .btn-group .btn.cancel:hover {
 	background: var(--light);
 }
+
+
+.rating-error-container {
+    border: 1px solid red;
+    background-color: #ffdddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: red;
+    list-style-type: none;
+}
