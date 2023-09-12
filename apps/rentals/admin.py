@@ -47,7 +47,7 @@ class VehicleBookingRequestAdmin(admin.ModelAdmin):
 
             if valid is False:
                 messages.set_level(request, messages.ERROR)
-                message = f"Invalid operation for object ID {obj.pk}."
+                message = f"Invalid operation for {obj}."
                 messages.error(request, message)
             else:
                 super().save_model(request, obj, form, change)

@@ -18,6 +18,14 @@ class VehicleCategory(models.Model):
         return self.category
 
 
+class VehiclelManager(models.Manager):
+    def get_by_id(self, pk):
+        try:
+            return self.get(pk=pk)
+        except self.model.DoesNotExist:
+            return None
+
+
 class Vehicle(models.Model):
     category = models.ForeignKey(VehicleCategory, on_delete=models.CASCADE)
     FUEL_TYPES = [
@@ -29,16 +37,37 @@ class Vehicle(models.Model):
     is_active = models.BooleanField(blank=False)
     image = models.ImageField(upload_to="images/", default=None)
 
+    objects = VehiclelManager()
+
     def __str__(self):
         return f"{self.category} {self.seating_capacity} Seater"
+
+
+class LocationlManager(models.Manager):
+    def get_by_id(self, pk):
+        try:
+            return self.get(pk=pk)
+        except self.model.DoesNotExist:
+            return None
 
 
 class Location(models.Model):
     title = models.CharField(max_length=20, blank=False)
     full_address = models.CharField(max_length=100, blank=False)
 
+    objects = LocationlManager()
+
     def __str__(self):
         return self.title
+
+
+class FareRateManager(models.Manager):
+    def active_fare_rates(self, pickup_location, dropoff_location):
+        return self.filter(
+            pickup=pickup_location,
+            dropoff=dropoff_location,
+            vehicle__is_active=True,
+        )
 
 
 class FareRate(models.Model):
@@ -58,6 +87,8 @@ class FareRate(models.Model):
         on_delete=models.CASCADE,
     )
     fare = models.IntegerField(blank=False)
+
+    objects = FareRateManager()
 
     def __str__(self):
         return f"{self.pickup} -> {self.dropoff} on {self.vehicle}"
@@ -97,6 +128,14 @@ def create_fare_entries_for_new_vehicle(sender, instance, created, **kwargs):
                         vehicle=instance,
                         fare=len(str(pickup_location)) + len(str(dropoff_location)),
                     )
+
+
+class VehicleBookingRequestManager(models.Manager):
+    def get_by_id(self, pk):
+        try:
+            return self.get(pk=pk)
+        except self.model.DoesNotExist:
+            return None
 
 
 class VehicleBookingRequest(models.Model):
@@ -140,6 +179,8 @@ class VehicleBookingRequest(models.Model):
     rating = models.PositiveIntegerField(
         choices=[(i, i) for i in range(1, 6)], null=True, blank=True
     )
+
+    objects = VehicleBookingRequestManager()
 
     def __str__(self):
         return (

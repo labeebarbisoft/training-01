@@ -1,5 +1,4 @@
 from django.views import View
-from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import (
@@ -10,7 +9,6 @@ from .forms import (
     PickupDropoffDateTimeForm,
 )
 from .models import Vehicle, VehicleBookingRequest, Location, FareRate
-from django.conf import settings
 
 
 class BaseView(LoginRequiredMixin, View):
@@ -50,10 +48,9 @@ class VehicleList(BaseView):
 
     def get(self, request):
         vehicle_form = self.VEHICLE_FORM()
-        fare_rates = FareRate.objects.filter(
-            pickup=request.session["pickup_location"],
-            dropoff=request.session["dropoff_location"],
-            vehicle__is_active=True,
+        fare_rates = FareRate.objects.active_fare_rates(
+            pickup_location=request.session["pickup_location"],
+            dropoff_location=request.session["dropoff_location"],
         )
         return render(
             request,
@@ -70,9 +67,9 @@ class VehicleList(BaseView):
             request.session["vehicle"] = vehicle_form.cleaned_data["selected_car"].pk
             return redirect("register_user")
         else:
-            fare_rates = FareRate.objects.filter(
-                pickup=request.session["pickup_location"],
-                dropoff=request.session["dropoff_location"],
+            fare_rates = FareRate.objects.active_fare_rates(
+                pickup_location=request.session["pickup_location"],
+                dropoff_location=request.session["dropoff_location"],
             )
             return render(
                 request,
@@ -131,15 +128,15 @@ class UserRegister(BaseView):
         user = request.user
         if datetime_form.is_valid():
             ride_request = VehicleBookingRequest(
-                pickup_location=Location.objects.get(
+                pickup_location=Location.objects.get_by_id(
                     pk=request.session["pickup_location"]
                 ),
-                dropoff_location=Location.objects.get(
+                dropoff_location=Location.objects.get_by_id(
                     pk=request.session["dropoff_location"]
                 ),
                 pickup_datetime=datetime_form.cleaned_data["pickup_time"],
                 status="pending",
-                vehicle=Vehicle.objects.get(pk=request.session["vehicle"]),
+                vehicle=Vehicle.objects.get_by_id(pk=request.session["vehicle"]),
                 customer=user.profile,
             )
             ride_request.save()
@@ -190,7 +187,9 @@ class SubmitRating(BaseView):
     def post(self, request):
         if not request.POST.get("rating") == "":
             booking_request_id = request.POST.get("booking_request_id")
-            booking_request = VehicleBookingRequest.objects.get(pk=booking_request_id)
+            booking_request = VehicleBookingRequest.objects.get_by_id(
+                pk=booking_request_id
+            )
             booking_request.rating = request.POST.get("rating")
             booking_request.save()
         return redirect("messages")
@@ -199,7 +198,7 @@ class SubmitRating(BaseView):
 class MarkComplete(BaseView):
     def post(self, request):
         booking_request_id = request.POST.get("booking_request_id")
-        booking_request = VehicleBookingRequest.objects.get(pk=booking_request_id)
+        booking_request = VehicleBookingRequest.objects.get_by_id(pk=booking_request_id)
         booking_request.status = "completed"
         booking_request.save()
         return redirect("messages")
