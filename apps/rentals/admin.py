@@ -95,7 +95,17 @@ class VehicleAdmin(ExportActionMixin, admin.ModelAdmin):
         response["Content-Disposition"] = 'attachment; filename="export.csv"'
         writer = csv.writer(response)
 
-        writer.writerow(["pickup", "dropoff", "vehicle", "fare"])
+        writer.writerow(
+            [
+                "pickup_id",
+                "pickup",
+                "dropoff_id",
+                "dropoff",
+                "vehicle_id",
+                "vehicle",
+                "fare",
+            ]
+        )
 
         for pickup, dropoff, vehicle in combinations:
             if pickup == dropoff:
@@ -111,7 +121,17 @@ class VehicleAdmin(ExportActionMixin, admin.ModelAdmin):
             dropoff_location = Location.objects.get(id=dropoff)
             vehicle_used = Vehicle.objects.get(id=vehicle)
 
-            writer.writerow([pickup_location, dropoff_location, vehicle_used, fare])
+            writer.writerow(
+                [
+                    pickup,
+                    pickup_location,
+                    dropoff,
+                    dropoff_location,
+                    vehicle,
+                    vehicle_used,
+                    fare,
+                ]
+            )
 
         return response
 
