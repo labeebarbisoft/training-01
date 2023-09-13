@@ -25,6 +25,7 @@
                             <p class="card-text">Seating Capacity: {{ fare_rate.vehicle.seating_capacity }}</p>
                             <p class="card-text">Fare: {{ fare_rate.fare }}</p>
                             <input type="radio" class="hidden_radio" id="{{ fare_rate.vehicle.id }}" name="selected_car" value="{{ fare_rate.vehicle.id }}">
+                            <input type="hidden" name="fare_{{ fare_rate.vehicle.id }}" value="{{ fare_rate.fare }}">
                         </div>
                     </div>
                 </div>

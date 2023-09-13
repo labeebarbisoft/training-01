@@ -1,6 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib import messages
+from import_export.admin import ExportActionMixin
+from itertools import product
+from django.http import HttpResponse
+import csv
 from .models import (
     Vehicle,
     VehicleBookingRequest,
@@ -73,7 +77,42 @@ class StatusChangeNotificationAdmin(admin.ModelAdmin):
 
 
 @admin.register(Vehicle)
-class VehicleAdmin(admin.ModelAdmin):
+class VehicleAdmin(ExportActionMixin, admin.ModelAdmin):
     list_filter = ("category",)
     list_display = ("__str__", "fuel_type", "is_active")
     list_editable = ("is_active",)
+
+    actions = ["export_fares"]
+
+    def export_fares(self, request, queryset):
+        pickups = Location.objects.values_list("id", flat=True)
+        dropoffs = Location.objects.values_list("id", flat=True)
+        vehicle_ids = queryset.values_list("id", flat=True)
+
+        combinations = product(pickups, dropoffs, vehicle_ids)
+
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="export.csv"'
+        writer = csv.writer(response)
+
+        writer.writerow(["pickup", "dropoff", "vehicle", "fare"])
+
+        for pickup, dropoff, vehicle in combinations:
+            if pickup == dropoff:
+                continue
+            print(pickup, dropoff, vehicle)
+
+            fare_rate = FareRate.objects.filter(
+                pickup=pickup, dropoff=dropoff, vehicle=vehicle
+            ).first()
+            fare = fare_rate.fare if fare_rate else ""
+
+            pickup_location = Location.objects.get(id=pickup)
+            dropoff_location = Location.objects.get(id=dropoff)
+            vehicle_used = Vehicle.objects.get(id=vehicle)
+
+            writer.writerow([pickup_location, dropoff_location, vehicle_used, fare])
+
+        return response
+
+    export_fares.short_description = "Export Fares For Selected Vehicles"

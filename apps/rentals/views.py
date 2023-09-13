@@ -64,7 +64,9 @@ class VehicleList(BaseView):
     def post(self, request):
         vehicle_form = self.VEHICLE_FORM(request.POST)
         if vehicle_form.is_valid():
-            request.session["vehicle"] = vehicle_form.cleaned_data["selected_car"].pk
+            vehicle_id = vehicle_form.cleaned_data["selected_car"].pk
+            request.session["vehicle"] = vehicle_id
+            request.session["fare"] = request.POST[f"fare_{vehicle_id}"]
             return redirect("register_user")
         else:
             fare_rates = FareRate.objects.active_fare_rates(
@@ -138,7 +140,7 @@ class UserRegister(BaseView):
                 status="pending",
                 vehicle=Vehicle.objects.get_by_id(pk=request.session["vehicle"]),
                 customer=user.profile,
-                fare=10,
+                fare=request.session["fare"],
             )
             ride_request.save()
             return redirect("home")
