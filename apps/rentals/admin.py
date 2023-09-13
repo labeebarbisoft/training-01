@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.shortcuts import render
 from import_export.admin import ExportActionMixin
 from itertools import product
 from django.http import HttpResponse
@@ -13,6 +14,7 @@ from .models import (
     FareRate,
     StatusChangeNotification,
 )
+from .forms import FareRateCSVUploadForm
 
 
 admin.site.register(VehicleCategory)
@@ -34,7 +36,6 @@ class VehicleBookingRequestAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if change:
-            print("here")
             previous_instance = VehicleBookingRequest.objects.get(pk=obj.pk)
 
             valid = True
@@ -82,7 +83,51 @@ class VehicleAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display = ("__str__", "fuel_type", "is_active")
     list_editable = ("is_active",)
 
-    actions = ["export_fares"]
+    actions = ["export_fares", "import_fares"]
+
+    # def process_uploaded_csv(csv_file):
+    #     for i in range(10):
+    #         print("here")
+    #     reader = csv.reader(csv_file)
+    #     next(reader)
+
+    #     for row in reader:
+    #         pickup, _, dropoff, _, vehicle, _, fare = row
+    #         fare_rate, created = FareRate.objects.get_or_create(
+    #             pickup=pickup,
+    #             dropoff=dropoff,
+    #             vehicle=vehicle,
+    #             defaults={"fare": fare},
+    #         )
+    #         if not created:
+    #             fare_rate.fare = fare
+    #             fare_rate.save()
+
+    #     distinct_pickups = Location.objects.values_list("id", flat=True).distinct()
+    #     distinct_dropoffs = Location.objects.values_list("id", flat=True).distinct()
+    #     distinct_vehicles = Vehicle.objects.values_list("id", flat=True).distinct()
+    #     FareRate.objects.exclude(
+    #         pickup__in=distinct_pickups,
+    #         dropoff__in=distinct_dropoffs,
+    #         vehicle__in=distinct_vehicles,
+    #     ).delete()
+
+    # # def import_fares(self, request, queryset):
+    # #     if request.method == "POST":
+    # #         form = FareRateCSVUploadForm(request.POST, request.FILES)
+    # #         if form.is_valid():
+    # #             print("no")
+    # #             csv_file = form.cleaned_data["csv_file"]
+    # #             self.process_uploaded_csv(csv_file)
+    # #             return HttpResponse("CSV file uploaded and processed successfully")
+    # #         else:
+    # #             return render(request, "admin/upload_csv.html", {"form": form})
+    # #     else:
+    # #         form = FareRateCSVUploadForm()
+
+    # #     return render(request, "admin/upload_csv.html", {"form": form})
+
+    # # import_fares.short_description = "Upload and Update Fare Rates from CSV"
 
     def export_fares(self, request, queryset):
         pickups = Location.objects.values_list("id", flat=True)

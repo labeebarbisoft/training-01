@@ -54,6 +54,14 @@
                         <span class="badge badge-danger badge-message">{{ unread_message_count }}</span>
                     {% endif %}
               {% endwith %}
+              {% if user.is_staff %}
+              <li class="nav-item">
+                <a class="nav-link" href="/file_upload/"><i class="far fa-clone"></i>Upload Fare Data</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/user_reports/"><i class="far fa-clone"></i>User Reports</a>
+              </li>
+              {% endif %}
               <li class="nav-item">
                   <a class="nav-link" href="/logout/"><i class="far fa-clone"></i>Logout</a>
               </li>

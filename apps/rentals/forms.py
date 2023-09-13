@@ -3,6 +3,10 @@ from .models import Vehicle, Location
 from django.utils import timezone
 
 
+class FareRateCSVUploadForm(forms.Form):
+    csv_file = forms.FileField()
+
+
 class UserForm(forms.Form):
     username = forms.CharField(max_length=20, required=True)
     first_name = forms.CharField(max_length=20, required=True)

@@ -7,6 +7,7 @@ from .forms import (
     UserForm,
     ProfileForm,
     PickupDropoffDateForm,
+    FareRateCSVUploadForm,
 )
 from .models import Vehicle, VehicleBookingRequest, Location, FareRate
 
@@ -219,6 +220,33 @@ class MarkComplete(BaseView):
         booking_request.status = "completed"
         booking_request.save()
         return redirect("messages")
+
+
+class FileUpload(BaseView):
+    TEMPLATE = "rentals/file_upload.html"
+    FORM = FareRateCSVUploadForm
+
+    def get(self, request):
+        form = self.FORM()
+        return render(request, self.TEMPLATE, {"form": form})
+
+    def post(self, request):
+        form = self.FORM(request.POST)
+        if form.is_valid():
+            return redirect("home/")
+        else:
+            return render(
+                request,
+                self.TEMPLATE,
+                {"form": form},
+            )
+
+
+class UserReports(BaseView):
+    TEMPLATE = "rentals/user_reports.html"
+
+    def get(self, request):
+        return render(request, self.TEMPLATE)
 
 
 class Extra(BaseView):

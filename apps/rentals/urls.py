@@ -8,6 +8,8 @@ from .views import (
     SubmitRating,
     MarkComplete,
     Extra,
+    FileUpload,
+    UserReports,
 )
 from . import views
 
@@ -20,4 +22,6 @@ urlpatterns = [
     path("messages/", MessagesView.as_view(), name="messages"),
     path("submit_rating", SubmitRating.as_view(), name="submit_rating"),
     path("mark_complete", MarkComplete.as_view(), name="mark_complete"),
+    path("file_upload/", FileUpload.as_view(), name="file_upload"),
+    path("user_reports/", UserReports.as_view(), name="user_reports"),
 ]
