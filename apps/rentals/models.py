@@ -149,7 +149,7 @@ class VehicleBookingRequest(models.Model):
         on_delete=models.CASCADE,
         related_name="dropoffs",
     )
-    pickup_datetime = models.DateTimeField(blank=False)
+    pickup_date = models.DateField(blank=False)
     STATUS_TYPES = [
         ("pending", "Pending"),
         ("approved", "Approved"),
@@ -179,6 +179,7 @@ class VehicleBookingRequest(models.Model):
     rating = models.PositiveIntegerField(
         choices=[(i, i) for i in range(1, 6)], null=True, blank=True
     )
+    fare = models.IntegerField()
 
     objects = VehicleBookingRequestManager()
 

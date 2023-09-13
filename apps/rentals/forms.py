@@ -14,18 +14,10 @@ class ProfileForm(forms.Form):
     contact_number = forms.CharField(max_length=20, required=True)
 
 
-class PickupDropoffDateTimeForm(forms.Form):
-    pickup_time = forms.DateTimeField(
-        label="Pickup Date/Time",
-        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
-        required=True,
-    )
-
-
-class PickupDropoffDateTimeForm(forms.Form):
-    pickup_time = forms.DateTimeField(
-        label="Pickup Date/Time",
-        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
+class PickupDropoffDateForm(forms.Form):
+    pickup_date = forms.DateField(
+        label="Pickup Date",
+        widget=forms.DateInput(attrs={"type": "date"}),
         required=True,
     )
 

@@ -6,7 +6,7 @@ from .forms import (
     VehicleSelectionForm,
     UserForm,
     ProfileForm,
-    PickupDropoffDateTimeForm,
+    PickupDropoffDateForm,
 )
 from .models import Vehicle, VehicleBookingRequest, Location, FareRate
 
@@ -85,7 +85,7 @@ class UserRegister(BaseView):
     TEMPLATE = "rentals/register_user.html"
     USER_FORM = UserForm
     PROFILE_FORM = ProfileForm
-    DATETIME_FORM = PickupDropoffDateTimeForm
+    DATE_FORM = PickupDropoffDateForm
 
     def prepare_forms(self, request):
         user = request.user
@@ -111,22 +111,22 @@ class UserRegister(BaseView):
 
     def get(self, request):
         user_form, profile_form = self.prepare_forms(request)
-        datetime_form = self.DATETIME_FORM()
+        date_form = self.DATE_FORM()
         return render(
             request,
             self.TEMPLATE,
             {
                 "user_form": user_form,
                 "profile_form": profile_form,
-                "pickup_dropoff_time_form": datetime_form,
+                "pickup_dropoff_time_form": date_form,
             },
         )
 
     def post(self, request):
         user_form, profile_form = self.prepare_forms(request)
-        datetime_form = self.DATETIME_FORM(request.POST)
+        date_form = self.DATE_FORM(request.POST)
         user = request.user
-        if datetime_form.is_valid():
+        if date_form.is_valid():
             ride_request = VehicleBookingRequest(
                 pickup_location=Location.objects.get_by_id(
                     pk=request.session["pickup_location"]
@@ -134,10 +134,11 @@ class UserRegister(BaseView):
                 dropoff_location=Location.objects.get_by_id(
                     pk=request.session["dropoff_location"]
                 ),
-                pickup_datetime=datetime_form.cleaned_data["pickup_time"],
+                pickup_date=date_form.cleaned_data["pickup_date"],
                 status="pending",
                 vehicle=Vehicle.objects.get_by_id(pk=request.session["vehicle"]),
                 customer=user.profile,
+                fare=10,
             )
             ride_request.save()
             return redirect("home")
@@ -148,7 +149,7 @@ class UserRegister(BaseView):
                 {
                     "user_form": user_form,
                     "profile_form": profile_form,
-                    "pickup_dropoff_time_form": datetime_form,
+                    "pickup_dropoff_time_form": date_form,
                 },
             )
 
@@ -158,7 +159,7 @@ class HomeView(BaseView):
 
     def get(self, request):
         user = request.user
-        field_names = ["ID", "Pickup", "Dropoff", "Time", "Status", "Vehicle", "Driver"]
+        field_names = ["ID", "Pickup", "Dropoff", "Date", "Status", "Vehicle", "Driver"]
         booked_rides = list(user.profile.booked_rides.all().order_by("-id"))
         context = {
             "field_names": field_names,
