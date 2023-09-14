@@ -11,6 +11,7 @@ from .forms import (
 )
 from .models import Vehicle, VehicleBookingRequest, Location, FareRate
 from apps.userauth.models import Profile
+import csv
 
 
 class BaseView(LoginRequiredMixin, View):
@@ -238,7 +239,43 @@ class FileUpload(BaseView):
     def post(self, request):
         form = self.FORM(request.POST, request.FILES)
         if form.is_valid():
-            return redirect("home/")
+            csv_file = request.FILES["csv_file"]
+            reader = csv_file.read().decode("utf-8")
+            rows = list(map(str, reader.split("\n")))
+            for row in rows[1:-1]:
+                pickup, _, dropoff, _, vehicle, _, fare = list(map(str, row.split(",")))
+                pickup = Location.objects.get(pk=int(pickup))
+                dropoff = Location.objects.get(pk=int(dropoff))
+                vehicle = Vehicle.objects.get(pk=int(vehicle))
+                fare = int(fare)
+                if fare > 0:
+                    print("here", pickup, dropoff, vehicle, fare)
+
+                    fare_rate, created = FareRate.objects.get_or_create(
+                        pickup=pickup,
+                        dropoff=dropoff,
+                        vehicle=vehicle,
+                        defaults={"fare": fare},
+                    )
+                    if not created:
+                        fare_rate.fare = fare
+                        fare_rate.save()
+                else:
+                    print("delete", pickup, dropoff, vehicle)
+                    FareRate.objects.filter(
+                        pickup=pickup,
+                        dropoff=dropoff,
+                        vehicle=vehicle,
+                    ).delete()
+            message = "Data updated successfully"
+            return render(
+                request,
+                self.TEMPLATE,
+                {
+                    "form": form,
+                    "message": message,
+                },
+            )
         else:
             return render(
                 request,
