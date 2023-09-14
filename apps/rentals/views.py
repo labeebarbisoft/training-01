@@ -240,6 +240,18 @@ class FileUpload(BaseView):
         form = self.FORM(request.POST, request.FILES)
         if form.is_valid():
             csv_file = request.FILES["csv_file"]
+            file_name = form.cleaned_data["csv_file"].name
+            if not file_name.endswith(".csv"):
+                message = "File must bt csv"
+                return render(
+                    request,
+                    self.TEMPLATE,
+                    {
+                        "form": form,
+                        "message": message,
+                    },
+                )
+
             reader = csv_file.read().decode("utf-8")
             rows = list(map(str, reader.split("\n")))
             for row in rows[1:-1]:
@@ -249,8 +261,6 @@ class FileUpload(BaseView):
                 vehicle = Vehicle.objects.get(pk=int(vehicle))
                 fare = int(fare)
                 if fare > 0:
-                    print("here", pickup, dropoff, vehicle, fare)
-
                     fare_rate, created = FareRate.objects.get_or_create(
                         pickup=pickup,
                         dropoff=dropoff,
@@ -261,7 +271,6 @@ class FileUpload(BaseView):
                         fare_rate.fare = fare
                         fare_rate.save()
                 else:
-                    print("delete", pickup, dropoff, vehicle)
                     FareRate.objects.filter(
                         pickup=pickup,
                         dropoff=dropoff,
