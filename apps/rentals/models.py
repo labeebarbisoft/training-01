@@ -94,42 +94,6 @@ class FareRate(models.Model):
         return f"{self.pickup} -> {self.dropoff} on {self.vehicle}"
 
 
-@receiver(post_save, sender=Location)
-def create_fare_entries(sender, instance, created, **kwargs):
-    if created:
-        all_locations = Location.objects.exclude(pk=instance.pk)
-        all_vehicles = Vehicle.objects.all()
-        for vehicle in all_vehicles:
-            for other_location in all_locations:
-                FareRate.objects.create(
-                    pickup=instance,
-                    dropoff=other_location,
-                    vehicle=vehicle,
-                    fare=len(str(other_location)) + len(str(instance)),
-                )
-                FareRate.objects.create(
-                    pickup=other_location,
-                    dropoff=instance,
-                    vehicle=vehicle,
-                    fare=len(str(other_location)) + len(str(instance)),
-                )
-
-
-@receiver(post_save, sender=Vehicle)
-def create_fare_entries_for_new_vehicle(sender, instance, created, **kwargs):
-    if created:
-        all_locations = Location.objects.all()
-        for pickup_location in all_locations:
-            for dropoff_location in all_locations:
-                if pickup_location != dropoff_location:
-                    FareRate.objects.create(
-                        pickup=pickup_location,
-                        dropoff=dropoff_location,
-                        vehicle=instance,
-                        fare=len(str(pickup_location)) + len(str(dropoff_location)),
-                    )
-
-
 class VehicleBookingRequestManager(models.Manager):
     def get_by_id(self, pk):
         try:

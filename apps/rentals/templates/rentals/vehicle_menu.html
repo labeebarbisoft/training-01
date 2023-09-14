@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block content %}
+
+
+{% if fare_rates %}
 {% for error in form.errors.selected_car %}
 <div class="error-container">
     {{ error }}
@@ -38,6 +41,9 @@
     <button type="submit" class="btn btn-primary">Next</button>
     </div>
 </form>
+{% else %}
+<h1>No Vehicles Available</h1>
+{% endif %}
 {% endblock %}
 
 {% block extra_js %}
