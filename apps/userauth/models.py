@@ -2,6 +2,28 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models import Sum, Count
+from django.db.models.functions import Coalesce
+
+
+class ProfileManager(models.Manager):
+    def get_orders(self, profile):
+        return self.filter(pk=profile.pk).aggregate(total_orders=Count("booked_rides"))
+
+    def get_fares(self, profile):
+        return self.filter(pk=profile.pk).aggregate(
+            total_fare=Sum("booked_rides__fare")
+        )
+
+    def get_reports_for_all_profiles(self):
+        return (
+            self.filter(role="customer")
+            .annotate(
+                total_rides=Count("booked_rides"),
+                total_fare=Coalesce(Sum("booked_rides__fare"), 0),
+            )
+            .values("user__username", "total_rides", "total_fare")
+        )
 
 
 class Profile(models.Model):
@@ -12,6 +34,8 @@ class Profile(models.Model):
     ]
     role = models.CharField(max_length=20, choices=ROLE_TYPES, blank=False)
     contact_number = models.CharField(max_length=20, blank=False)
+
+    objects = ProfileManager()
 
     def unread_notification_count(self):
         return self.notifications.exclude(notification_status="read").count()

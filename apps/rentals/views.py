@@ -10,6 +10,7 @@ from .forms import (
     FareRateCSVUploadForm,
 )
 from .models import Vehicle, VehicleBookingRequest, Location, FareRate
+from apps.userauth.models import Profile
 
 
 class BaseView(LoginRequiredMixin, View):
@@ -164,9 +165,13 @@ class HomeView(BaseView):
         user = request.user
         field_names = ["ID", "Pickup", "Dropoff", "Date", "Status", "Vehicle", "Driver"]
         booked_rides = list(user.profile.booked_rides.all().order_by("-id"))
+        total_orders = Profile.objects.get_orders(user.profile)
+        total_fare = Profile.objects.get_fares(user.profile)
         context = {
             "field_names": field_names,
             "booked_rides": booked_rides,
+            "total_orders": total_orders,
+            "total_fare": total_fare,
         }
         return render(request, self.TEMPLATE, context)
 
@@ -231,7 +236,7 @@ class FileUpload(BaseView):
         return render(request, self.TEMPLATE, {"form": form})
 
     def post(self, request):
-        form = self.FORM(request.POST)
+        form = self.FORM(request.POST, request.FILES)
         if form.is_valid():
             return redirect("home/")
         else:
@@ -246,7 +251,8 @@ class UserReports(BaseView):
     TEMPLATE = "rentals/user_reports.html"
 
     def get(self, request):
-        return render(request, self.TEMPLATE)
+        report = Profile.objects.get_reports_for_all_profiles()
+        return render(request, self.TEMPLATE, {"report": report})
 
 
 class Extra(BaseView):
