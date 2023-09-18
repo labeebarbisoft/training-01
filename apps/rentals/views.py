@@ -1,17 +1,15 @@
-from django.views import View
-from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import (
-    PickupDropoffLocationForm,
-    VehicleSelectionForm,
-    UserForm,
-    ProfileForm,
-    PickupDropoffDateForm,
-    FareRateCSVUploadForm,
-)
-from .models import Vehicle, VehicleBookingRequest, Location, FareRate
-from apps.userauth.models import Profile
 import csv
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, render
+from django.views import View
+
+from apps.userauth.models import Profile
+
+from .forms import (FareRateCSVUploadForm, PickupDropoffDateForm,
+                    PickupDropoffLocationForm, ProfileForm, UserForm,
+                    VehicleSelectionForm)
+from .models import FareRate, Location, Vehicle, VehicleBookingRequest
 
 
 class BaseView(LoginRequiredMixin, View):

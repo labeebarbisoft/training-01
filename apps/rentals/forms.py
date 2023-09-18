@@ -1,6 +1,7 @@
 from django import forms
-from .models import Vehicle, Location
 from django.utils import timezone
+
+from .models import Location, Vehicle
 
 
 class FareRateCSVUploadForm(forms.Form):

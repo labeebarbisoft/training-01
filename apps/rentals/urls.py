@@ -1,17 +1,9 @@
 from django.urls import path
-from .views import (
-    LocationList,
-    VehicleList,
-    UserRegister,
-    HomeView,
-    MessagesView,
-    SubmitRating,
-    MarkComplete,
-    Extra,
-    FileUpload,
-    UserReports,
-)
+
 from . import views
+from .views import (Extra, FileUpload, HomeView, LocationList, MarkComplete,
+                    MessagesView, SubmitRating, UserRegister, UserReports,
+                    VehicleList)
 
 urlpatterns = [
     path("", Extra.as_view(), name="extra"),

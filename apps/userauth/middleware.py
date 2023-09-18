@@ -1,6 +1,6 @@
-from django.shortcuts import redirect
-from django.http import Http404
 from django.contrib.auth import logout
+from django.http import Http404
+from django.shortcuts import redirect
 
 
 class PreventDriverLoginMiddleware:

@@ -1,20 +1,14 @@
-from django.contrib import admin
-from django.contrib.auth.models import User
-from django.contrib import messages
-from import_export.admin import ExportActionMixin
-from itertools import product
-from django.http import HttpResponse
-from .models import (
-    Vehicle,
-    VehicleBookingRequest,
-    VehicleCategory,
-    Location,
-    FareRate,
-    StatusChangeNotification,
-)
 import csv
-from .forms import FareRateCSVUploadForm
+from itertools import product
 
+from django.contrib import admin, messages
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from import_export.admin import ExportActionMixin
+
+from .forms import FareRateCSVUploadForm
+from .models import (FareRate, Location, StatusChangeNotification, Vehicle,
+                     VehicleBookingRequest, VehicleCategory)
 
 admin.site.register(VehicleCategory)
 admin.site.unregister(User)
