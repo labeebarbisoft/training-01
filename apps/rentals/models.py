@@ -8,6 +8,8 @@ defining entities and relationships between them.
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.exceptions import ValidationError
+from django.contrib import messages
 
 from apps.userauth.models import Profile
 
@@ -158,14 +160,32 @@ class VehicleBookingRequest(models.Model):
             super().save(*args, **kwargs)
         else:
             previous_instance = VehicleBookingRequest.objects.get(pk=self.pk)
+            request = kwargs.get("req")
+            valid = True
+            if self.status == previous_instance.status:
+                pass
+            elif previous_instance.status == "pending":
+                if not (self.status == "rejected" or self.status == "approved"):
+                    valid = False
+            elif previous_instance.status == "approved":
+                if not self.status == "completed":
+                    valid = False
+            else:
+                valid = False
 
-            if self.status != previous_instance.status:
-                StatusChangeNotification.objects.create(
-                    booking_request=self,
-                    customer=self.customer,
-                    booking_status=self.status,
-                )
-            super().save(*args, **kwargs)
+            if not valid:
+                pass
+                # messages.set_level(request, messages.ERROR)
+                # message = f"Invalid operation for {self}."
+                # messages.error(request, message)
+            else:
+                if self.status != previous_instance.status:
+                    StatusChangeNotification.objects.create(
+                        booking_request=self,
+                        customer=self.customer,
+                        booking_status=self.status,
+                    )
+                super().save(*args, **kwargs)
 
 
 class StatusChangeNotification(models.Model):
