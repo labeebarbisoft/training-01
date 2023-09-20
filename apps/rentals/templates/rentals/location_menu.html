@@ -1,0 +1,14 @@
+{% extends "rentals/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="col-auto my-1">
+    <button type="submit" class="btn btn-primary">Next</button>
+    </div>
+</form>
+
+{% endblock %}

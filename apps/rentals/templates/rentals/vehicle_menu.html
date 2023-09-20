@@ -1,0 +1,51 @@
+{% extends "rentals/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'vehicle_menu.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+{% if fare_rates %}
+{% for error in form.errors.selected_car %}
+<div class="error-container">
+    {{ error }}
+</div>
+{% endfor %}
+
+<form action="" method="post" novalidate>
+    {% csrf_token %} 
+    <div class="container">
+        <div class="row">
+            {% for fare_rate in fare_rates %}
+                <div class="col-md-6">
+                    <div class="card mb-3 card-clickable" data-vehicle-id="{{ fare_rate.vehicle.id }}">
+                        <img src="{{ fare_rate.vehicle.image.url }}" class="card-img-top equal-size-image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ fare_rate.vehicle.category }}</h5>
+                            <p class="card-text">Seating Capacity: {{ fare_rate.vehicle.seating_capacity }}</p>
+                            <p class="card-text">Fare: {{ fare_rate.fare }}</p>
+                            <input type="radio" class="hidden_radio" id="{{ fare_rate.vehicle.id }}" name="selected_car" value="{{ fare_rate.vehicle.id }}">
+                            <input type="hidden" name="fare_{{ fare_rate.vehicle.id }}" value="{{ fare_rate.fare }}">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+    <div class="col-auto my-1">
+    <a href="javascript:window.history.back();" class="btn btn-primary">Back</a>
+    <button type="submit" class="btn btn-primary">Next</button>
+    </div>
+</form>
+{% else %}
+<h1>No Vehicles Available</h1>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'vehicle_menu.js' %}"></script>
+{% endblock %}

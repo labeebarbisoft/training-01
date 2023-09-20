@@ -1,0 +1,18 @@
+{% extends "rentals/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ user_form|crispy }}
+    {{ profile_form|crispy }}
+    {{ pickup_dropoff_time_form|crispy }}
+    <div class="col-auto my-1">
+        <a href="javascript:window.history.back();" class="btn btn-primary">Back</a>
+        <button type="submit" class="btn btn-primary">Next</button>
+    </div>
+</form>
+
+{% endblock %}

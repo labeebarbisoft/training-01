@@ -1,0 +1,61 @@
+{% extends "rentals/base.html" %}
+
+{% block content %}
+{% if booked_rides %}
+<h1>User Orders</h1>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Total Orders</th>
+      <th scope="col">Total Fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        {% for key, value in total_orders.items %}
+        <td>{{ value }}</td>
+        {% endfor %}
+        {% for key, value in total_fare.items %}
+        <td>{{ value }}</td>
+        {% endfor %} 
+    </tr>
+  </tbody>
+</table>
+<br><br>
+<h1>Order Details</h1>
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        {% for name in field_names %}
+            <th scope="col">{{ name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+        {% for field in booked_rides %}
+      <tr>
+            <th scope="row">{{ field.id }}</th>
+            <td>{{ field.pickup_location }}</td>
+            <td>{{ field.dropoff_location }}</td>
+            <td>{{ field.pickup_date }}</td>
+            <td class="
+            {% if field.status == 'rejected' %}
+              text-danger
+            {% elif field.status == 'pending' %}
+              text-warning
+            {% else %}
+              text-success
+            {% endif %}">
+            {{ field.status }}
+            </td>
+            <td>{{ field.vehicle }}</td>
+            <td>{{ field.driver }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h1>No rides booked yet!</h1>
+{% endif %}
+
+{% endblock %}

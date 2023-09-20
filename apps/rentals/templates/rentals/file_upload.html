@@ -1,0 +1,17 @@
+{% extends "rentals/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if message %}
+<h1>{{ message }}</h1>
+{% endif %}
+<form action="" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="col-auto my-1">
+    <button type="submit" class="btn btn-primary">Next</button>
+    </div>
+</form>
+
+{% endblock %}
