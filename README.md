@@ -1,1 +1,1 @@
-# training
+# learning django drf
