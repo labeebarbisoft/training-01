@@ -120,6 +120,7 @@ class VehicleBookingRequest(models.Model):
         ("approved", "Approved"),
         ("completed", "Completed"),
         ("rejected", "Rejected"),
+        ("closed", "Closed"),
     ]
     status = models.CharField(max_length=20, choices=STATUS_TYPES, blank=False)
     vehicle = models.ForeignKey(
@@ -162,7 +163,11 @@ class VehicleBookingRequest(models.Model):
             if self.status == previous_instance.status:
                 pass
             elif previous_instance.status == "pending":
-                if not (self.status == "rejected" or self.status == "approved"):
+                if not (
+                    self.status == "rejected"
+                    or self.status == "approved"
+                    or self.status == "closed"
+                ):
                     valid = False
             elif previous_instance.status == "approved":
                 if not self.status == "completed":
@@ -204,6 +209,7 @@ class StatusChangeNotification(models.Model):
         ("approved", "Approved"),
         ("completed", "Completed"),
         ("rejected", "Rejected"),
+        ("closed", "Closed"),
     ]
     booking_status = models.CharField(max_length=20, choices=BOOKING_STATUS_TYPES)
     NOTIFICATION_STATUS_TYPES = [

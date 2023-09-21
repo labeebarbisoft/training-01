@@ -26,14 +26,14 @@ class PickupDropoffDateForm(forms.Form):
         required=True,
     )
 
-    def clean(self):
-        cleaned_data = super().clean()
-        pickup_time = cleaned_data.get("pickup_time")
-        now = timezone.now()
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     pickup_time = cleaned_data.get("pickup_time")
+    #     now = timezone.now()
 
-        if pickup_time and pickup_time <= now:
-            self.add_error("pickup_time", "Pickup time must be in the future.")
-        return cleaned_data
+    #     if pickup_time and pickup_time <= now:
+    #         self.add_error("pickup_time", "Pickup time must be in the future.")
+    #     return cleaned_data
 
 
 class PickupDropoffLocationForm(forms.Form):

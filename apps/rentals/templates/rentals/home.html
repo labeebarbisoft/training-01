@@ -39,7 +39,7 @@
             <td>{{ field.dropoff_location }}</td>
             <td>{{ field.pickup_date }}</td>
             <td class="
-            {% if field.status == 'rejected' %}
+            {% if field.status == 'rejected' or field.status == 'closed' %}
               text-danger
             {% elif field.status == 'pending' %}
               text-warning
