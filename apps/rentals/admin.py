@@ -37,20 +37,18 @@ class VehicleBookingRequestAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         admin_user = request.user
         logger = logging.getLogger("change_logger")
-        handler = logging.FileHandler("changes.log")
-        formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-        logger.setLevel(logging.INFO)
-        logger.info(
-            f"Admin {admin_user.username} changed the status of {obj} to {obj.status}"
-        )
         try:
             super().save_model(request, obj, form, change)
+            logger.info(
+                f"Admin {admin_user.username} changed the status of {obj} to {obj.status}"
+            )
         except Http404:
             messages.set_level(request, messages.ERROR)
             message = f"Invalid operation."
             messages.error(request, message)
+            logger.info(
+                f"Admin {admin_user.username} tried to change the status of {obj} to {obj.status}"
+            )
 
 
 @admin.register(FareRate)

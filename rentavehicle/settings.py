@@ -144,3 +144,41 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/login"
+
+LOGGING_DIR = os.path.join(BASE_DIR, "logs")
+if not os.path.exists(LOGGING_DIR):
+    os.makedirs(LOGGING_DIR)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {
+        "simple": {"format": "%(levelname)s: %(message)s"},
+    },
+    "handlers": {
+        "change_logger_handler": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(LOGGING_DIR, "changes.log"),
+            "formatter": "simple",
+        },
+        "status_logger_handler": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(LOGGING_DIR, "app.log"),
+            "formatter": "simple",
+        },
+    },
+    "loggers": {
+        "change_logger": {
+            "handlers": ["change_logger_handler"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "status_logger": {
+            "handlers": ["status_logger_handler"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}

@@ -5,3 +5,4 @@ __pycache__/
 todo.txt
 db.sqlite3
 app.log
+changes.log
