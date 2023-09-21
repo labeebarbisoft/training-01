@@ -4,7 +4,7 @@ from itertools import product
 from django.contrib import admin, messages
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from import_export.admin import ExportActionMixin
+from django.http import Http404
 
 from .forms import FareRateCSVUploadForm
 from .models import (
@@ -34,29 +34,12 @@ class VehicleBookingRequestAdmin(admin.ModelAdmin):
     list_editable = ("status",)
 
     def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
-
-    #     if change:
-    #         previous_instance = VehicleBookingRequest.objects.get(pk=obj.pk)
-
-    #         valid = True
-    #         if obj.status == previous_instance.status:
-    #             pass
-    #         elif previous_instance.status == "pending":
-    #             if not (obj.status == "rejected" or obj.status == "approved"):
-    #                 valid = False
-    #         elif previous_instance.status == "approved":
-    #             if not obj.status == "completed":
-    #                 valid = False
-    #         else:
-    #             valid = False
-
-    #         if valid is False:
-    #             messages.set_level(request, messages.ERROR)
-    #             message = f"Invalid operation for {obj}."
-    #             messages.error(request, message)
-    #         else:
-    #             super().save_model(request, obj, form, change)
+        try:
+            super().save_model(request, obj, form, change)
+        except Http404:
+            messages.set_level(request, messages.ERROR)
+            message = f"Invalid operation."
+            messages.error(request, message)
 
 
 @admin.register(FareRate)
@@ -140,7 +123,7 @@ class FareExportUtility:
 
 
 @admin.register(Vehicle)
-class VehicleAdmin(ExportActionMixin, admin.ModelAdmin):
+class VehicleAdmin(admin.ModelAdmin):
     list_filter = ("category",)
     list_display = ("category", "seating_capacity", "fuel_type", "is_active")
     list_editable = ("is_active",)

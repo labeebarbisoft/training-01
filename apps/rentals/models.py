@@ -6,10 +6,8 @@ defining entities and relationships between them.
 
 
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.core.exceptions import ValidationError
-from django.contrib import messages
+from django.http import Http404
+
 
 from apps.userauth.models import Profile
 
@@ -174,10 +172,7 @@ class VehicleBookingRequest(models.Model):
                 valid = False
 
             if not valid:
-                pass
-                # messages.set_level(request, messages.ERROR)
-                # message = f"Invalid operation for {self}."
-                # messages.error(request, message)
+                raise Http404
             else:
                 if self.status != previous_instance.status:
                     StatusChangeNotification.objects.create(
