@@ -176,12 +176,13 @@ class VehicleBookingRequest(models.Model):
                 valid = False
 
             if not valid:
-                logging.basicConfig(
-                    filename="app.log",
-                    filemode="w",
-                    format="%(name)s - %(levelname)s - %(message)s",
-                )
-                logging.error("This status can not be changed to the requested one.")
+                logger = logging.getLogger("status_logger")
+                handler = logging.FileHandler("app.log")
+                formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
+                handler.setFormatter(formatter)
+                logger.addHandler(handler)
+                logger.setLevel(logging.ERROR)
+                logger.error("This status can not be changed to the requested one!")
                 raise Http404
             else:
                 if self.status != previous_instance.status:

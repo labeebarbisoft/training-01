@@ -1,4 +1,5 @@
 import csv
+import logging
 from itertools import product
 
 from django.contrib import admin, messages
@@ -34,6 +35,16 @@ class VehicleBookingRequestAdmin(admin.ModelAdmin):
     list_editable = ("status",)
 
     def save_model(self, request, obj, form, change):
+        admin_user = request.user
+        logger = logging.getLogger("change_logger")
+        handler = logging.FileHandler("changes.log")
+        formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.setLevel(logging.INFO)
+        logger.info(
+            f"Admin {admin_user.username} changed the status of {obj} to {obj.status}"
+        )
         try:
             super().save_model(request, obj, form, change)
         except Http404:
