@@ -4,7 +4,7 @@ This module contains Django modles for handling user authentication,
 defining entities and relationships between them.
 """
 
-
+import logging
 from django.db import models
 from django.http import Http404
 
@@ -158,7 +158,6 @@ class VehicleBookingRequest(models.Model):
             super().save(*args, **kwargs)
         else:
             previous_instance = VehicleBookingRequest.objects.get(pk=self.pk)
-            request = kwargs.get("req")
             valid = True
             if self.status == previous_instance.status:
                 pass
@@ -172,6 +171,12 @@ class VehicleBookingRequest(models.Model):
                 valid = False
 
             if not valid:
+                logging.basicConfig(
+                    filename="app.log",
+                    filemode="w",
+                    format="%(name)s - %(levelname)s - %(message)s",
+                )
+                logging.error("This status can not be changed to the requested one.")
                 raise Http404
             else:
                 if self.status != previous_instance.status:
