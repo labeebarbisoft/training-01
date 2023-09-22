@@ -19,14 +19,8 @@ class Command(BaseCommand):
 
         pending_instances = VehicleBookingRequest.objects.filter(
             status="pending", pickup_date__lte=days_back
-        )
-
-        for instance in pending_instances:
-            instance.status = "closed"
-            instance.save()
+        ).update(status="closed")
 
         self.stdout.write(
-            self.style.SUCCESS(
-                f"Successfully updated {len(pending_instances)} instances"
-            )
+            self.style.SUCCESS(f"Successfully updated {pending_instances} instances")
         )
