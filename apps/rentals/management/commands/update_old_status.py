@@ -22,5 +22,7 @@ class Command(BaseCommand):
         ).update(status="closed")
 
         self.stdout.write(
-            self.style.SUCCESS(f"Successfully updated {pending_instances} instances")
+            self.style.SUCCESS(
+                f"Successfully updated {pending_instances} instances of VehicleBookingRequest"
+            )
         )
