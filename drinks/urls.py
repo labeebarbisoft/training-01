@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import DrinkList, get_csrf_token
+from .views import DrinkList, HelloView
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("drinks/", DrinkList.as_view(), name="drink_list"),
-    path("get-csrf-token/", get_csrf_token, name="get_csrf_token"),
+    path("admin", admin.site.urls),
+    path("drinks", DrinkList.as_view(), name="drink_list"),
+    path("hello", HelloView.as_view(), name="hello_view"),
+    path("api-token-auth", obtain_auth_token, name="api_token_auth"),
 ]
