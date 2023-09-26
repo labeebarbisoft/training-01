@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import HelloView
+from .views import BranchView
 
 urlpatterns = [
-    path("", HelloView.as_view(), name="hello_view"),
+    path("", BranchView.as_view(), name="branch_view"),
 ]
