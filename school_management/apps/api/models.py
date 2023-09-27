@@ -59,7 +59,10 @@ class Student(models.Model):
 
 
 class Date(models.Model):
-    date = models.DateField()
+    date = models.DateField(primary_key=True)
+
+    def __str__(self):
+        return str(self.date)
 
 
 class Attendance(models.Model):

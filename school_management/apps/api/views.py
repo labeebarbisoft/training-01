@@ -209,7 +209,7 @@ class AttendanceView(APIView):
             subject_id = item["subject"]
             date_id = item["date"]
             subject = Subject.objects.get(pk=subject_id)
-            date = Date.objects.get(pk=date_id)
+            date = Date.objects.get(date=date_id)
             enrolled_students = subject.student_set.all()
             for student in enrolled_students:
                 Attendance.objects.create(
