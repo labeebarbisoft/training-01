@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import City, School, Branch
+from .models import City, School, Branch, Grade, Section
 
 
 class CitySerializer(serializers.ModelSerializer):
@@ -18,3 +18,15 @@ class BranchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Branch
         fields = ["id", "name", "address", "school", "city"]
+
+
+class GradeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Grade
+        fields = ["id", "name", "branch"]
+
+
+class SectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Section
+        fields = ["id", "name", "grade"]

@@ -23,3 +23,48 @@ class Branch(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Grade(models.Model):
+    name = models.CharField(max_length=100)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Section(models.Model):
+    name = models.CharField(max_length=100)
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Subject(models.Model):
+    name = models.CharField(max_length=100)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    subjects = models.ManyToManyField(Subject)
+
+    def __str__(self):
+        return self.name
+
+
+class Date(models.Model):
+    date = models.DateField()
+
+
+class Attendance(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    date = models.ForeignKey(Date, on_delete=models.CASCADE)
+    STATUSES = [("present", "Present"), ("absent", "Absent"), ("leave", "Leave")]
+    status = models.CharField(max_length=100, choices=STATUSES, default="present")
