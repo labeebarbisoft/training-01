@@ -71,3 +71,6 @@ class Attendance(models.Model):
     date = models.ForeignKey(Date, on_delete=models.CASCADE)
     STATUSES = [("present", "Present"), ("absent", "Absent"), ("leave", "Leave")]
     status = models.CharField(max_length=100, choices=STATUSES, default="present")
+
+    def __str__(self):
+        return f"{self.student} | {self.subject} | {self.date} | {self.status}"

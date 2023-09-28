@@ -3,8 +3,24 @@ from django.db import transaction
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import City, School, Branch, Grade, Section, Subject, Attendance, Date
-from .serializers import BranchSerializer, GradeSerializer, SectionSerializer
+from .models import (
+    City,
+    School,
+    Branch,
+    Grade,
+    Section,
+    Subject,
+    Attendance,
+    Date,
+    Student,
+)
+from .serializers import (
+    BranchSerializer,
+    GradeSerializer,
+    SectionSerializer,
+    AttendanceSerializer,
+    StudnetSerializer,
+)
 
 
 class BranchView(APIView):
@@ -202,7 +218,7 @@ class SectionView(APIView):
             )
 
 
-class AttendanceView(APIView):
+class CreateAttendanceView(APIView):
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
         for item in data:
@@ -220,4 +236,69 @@ class AttendanceView(APIView):
         return Response(
             {"message": "Attendance added successfully"},
             status.HTTP_200_OK,
+        )
+
+
+class GetAttendanceView(APIView):
+    def post(self, request):
+        data = json.loads(request.body.decode("utf-8"))
+        for item in data:
+            subject_id = item["subject"]
+            date_id = item["date"]
+            subject = Subject.objects.get(pk=subject_id)
+            date = Date.objects.get(date=date_id)
+            attendances = Attendance.objects.filter(subject=subject, date=date)
+            serializer = AttendanceSerializer(attendances, many=True)
+            return Response(
+                {"Attendances": serializer.data},
+                status=status.HTTP_200_OK,
+            )
+
+
+class MarkAttendanceView(APIView):
+    def put(self, request):
+        data = json.loads(request.body.decode("utf-8"))
+        for item in data:
+            attendance = Attendance.objects.get(id=item["id"])
+            serializer = AttendanceSerializer(attendance, data=item)
+            if serializer.is_valid():
+                serializer.save()
+        return Response({}, status=status.HTTP_200_OK)
+
+
+class StudentInformationView(APIView):
+    def post(self, request):
+        body = json.loads(request.body.decode("utf-8"))
+        operation = body["operation"]
+        data = body["data"]
+        if operation == "profile":
+            try:
+                student = Student.objects.get(pk=data["id"])
+                serializer = StudnetSerializer(student)
+                return Response({"student": serializer.data}, status=status.HTTP_200_OK)
+            except Student.DoesNotExist:
+                return Response(
+                    {"message": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
+                )
+        elif operation == "attendance":
+            try:
+                student = Student.objects.get(pk=data["id"])
+                subject = Subject.objects.get(pk=data["subject_id"])
+                attendances = Attendance.objects.filter(
+                    student=student, subject=subject
+                )
+                serializer = AttendanceSerializer(attendances, many=True)
+                return Response(
+                    {"attendance": serializer.data}, status=status.HTTP_200_OK
+                )
+            except Student.DoesNotExist:
+                return Response(
+                    {"message": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
+                )
+            except Subject.DoesNotExist:
+                return Response(
+                    {"message": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
+                )
+        return Response(
+            {"message": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
         )
