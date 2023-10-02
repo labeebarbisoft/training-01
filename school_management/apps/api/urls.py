@@ -4,8 +4,7 @@ from .views import (
     GradeView,
     SectionView,
     CreateAttendanceView,
-    GetAttendanceView,
-    MarkAttendanceView,
+    AttendanceView,
     StudentInformationView,
 )
 
@@ -20,13 +19,8 @@ urlpatterns = [
     ),
     path(
         "get_attendance/",
-        GetAttendanceView.as_view(),
+        AttendanceView.as_view(),
         name="get_attendance",
-    ),
-    path(
-        "mark_attendance/",
-        MarkAttendanceView.as_view(),
-        name="mark_attendance",
     ),
     path(
         "student_info/",

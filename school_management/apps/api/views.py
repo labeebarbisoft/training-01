@@ -3,6 +3,9 @@ from django.db import transaction
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from .permissions import IsOwnerOfAttendance
 from .models import (
     City,
     School,
@@ -24,6 +27,9 @@ from .serializers import (
 
 
 class BranchView(APIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAdminUser]
+
     def get_branches(self):
         branches = Branch.objects.all()
         serializer = BranchSerializer(branches, many=True)
@@ -89,6 +95,9 @@ class BranchView(APIView):
 
 
 class GradeView(APIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAdminUser]
+
     def get_grades(self):
         grades = Grade.objects.all()
         serializer = GradeSerializer(grades, many=True)
@@ -154,6 +163,9 @@ class GradeView(APIView):
 
 
 class SectionView(APIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAdminUser]
+
     def get_sections(self):
         sections = Section.objects.all()
         serializer = SectionSerializer(sections, many=True)
@@ -219,6 +231,9 @@ class SectionView(APIView):
 
 
 class CreateAttendanceView(APIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAdminUser]
+
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
         for item in data:
@@ -239,7 +254,10 @@ class CreateAttendanceView(APIView):
         )
 
 
-class GetAttendanceView(APIView):
+class AttendanceView(APIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAdminUser]
+
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
         for item in data:
@@ -254,8 +272,6 @@ class GetAttendanceView(APIView):
                 status=status.HTTP_200_OK,
             )
 
-
-class MarkAttendanceView(APIView):
     def put(self, request):
         data = json.loads(request.body.decode("utf-8"))
         for item in data:
@@ -267,6 +283,17 @@ class MarkAttendanceView(APIView):
 
 
 class StudentInformationView(APIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated, IsOwnerOfAttendance]
+
+    def get(self, request):
+        content = {
+            "user": str(request.user),  # `django.contrib.auth.User` instance.
+            "staff": str(request.user.is_staff),  # `django.contrib.auth.User` instance.
+            "auth": str(request.auth),  # None
+        }
+        return Response(content)
+
     def post(self, request):
         body = json.loads(request.body.decode("utf-8"))
         operation = body["operation"]
@@ -274,6 +301,7 @@ class StudentInformationView(APIView):
         if operation == "profile":
             try:
                 student = Student.objects.get(pk=data["id"])
+                self.check_object_permissions(request, student)
                 serializer = StudnetSerializer(student)
                 return Response({"student": serializer.data}, status=status.HTTP_200_OK)
             except Student.DoesNotExist:
@@ -283,6 +311,7 @@ class StudentInformationView(APIView):
         elif operation == "attendance":
             try:
                 student = Student.objects.get(pk=data["id"])
+                self.check_object_permissions(request, student)
                 subject = Subject.objects.get(pk=data["subject_id"])
                 attendances = Attendance.objects.filter(
                     student=student, subject=subject
