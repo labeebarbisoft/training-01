@@ -18,9 +18,9 @@ urlpatterns = [
         name="create_attendance",
     ),
     path(
-        "get_attendance/",
+        "attendance/",
         AttendanceView.as_view(),
-        name="get_attendance",
+        name="attendance",
     ),
     path(
         "student_info/",

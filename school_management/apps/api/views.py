@@ -261,8 +261,8 @@ class AttendanceView(APIView):
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
         for item in data:
-            subject_id = item["subject"]
-            date_id = item["date"]
+            subject_id = data[item]["subject"]
+            date_id = data[item]["date"]
             subject = Subject.objects.get(pk=subject_id)
             date = Date.objects.get(date=date_id)
             attendances = Attendance.objects.filter(subject=subject, date=date)
@@ -271,6 +271,10 @@ class AttendanceView(APIView):
                 {"Attendances": serializer.data},
                 status=status.HTTP_200_OK,
             )
+        return Response(
+            {"Attendances": data},
+            status=status.HTTP_200_OK,
+        )
 
     def put(self, request):
         data = json.loads(request.body.decode("utf-8"))
