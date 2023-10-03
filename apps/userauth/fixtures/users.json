@@ -1,0 +1,205 @@
+[
+    {
+      "model": "auth.user",
+      "pk": 1,
+      "fields": {
+          "username": "labeeb",
+          "first_name": "lab",
+          "last_name": "eeb",
+          "email": "labeeb@gmail.com",
+          "password": "pbkdf2_sha256$320000$WCwphnHHVLHIWY6x7xzVA1$Q/mMS6Ibc49gc+QhWhaWsD884HLKMK/d8z5+nSlvrRM=",
+          "is_superuser": true,
+          "is_staff": true,
+          "is_active": true
+      }
+    },
+    {
+      "model": "userauth.profile",
+      "pk": 1,
+      "fields": {
+          "user": 1,
+          "role": "driver",
+          "contact_number": "007"
+      }
+    },
+    {
+      "model": "auth.user",
+      "pk": 2,
+      "fields": {
+          "username": "shah",
+          "first_name": "sh",
+          "last_name": "ah",
+          "email": "shah@gmail.com",
+          "password": "pbkdf2_sha256$320000$WCwphnHHVLHIWY6x7xzVA1$Q/mMS6Ibc49gc+QhWhaWsD884HLKMK/d8z5+nSlvrRM="
+      }
+    },
+    {
+      "model": "userauth.profile",
+      "pk": 2,
+      "fields": {
+          "user": 2,
+          "role": "driver",
+          "contact_number": "007"
+      }
+    },
+    {
+      "model": "auth.user",
+      "pk": 3,
+      "fields": {
+          "username": "zuko",
+          "first_name": "zu",
+          "last_name": "ko",
+          "email": "zuko@gmail.com",
+          "password": "pbkdf2_sha256$320000$WCwphnHHVLHIWY6x7xzVA1$Q/mMS6Ibc49gc+QhWhaWsD884HLKMK/d8z5+nSlvrRM="
+      }
+    },
+    {
+      "model": "userauth.profile",
+      "pk": 3,
+      "fields": {
+          "user": 3,
+          "role": "driver",
+          "contact_number": "007"
+      }
+    },
+    {
+      "model": "auth.user",
+      "pk": 4,
+      "fields": {
+          "username": "ninja",
+          "first_name": "nin",
+          "last_name": "ja",
+          "email": "ninja@gmail.com",
+          "password": "pbkdf2_sha256$320000$WCwphnHHVLHIWY6x7xzVA1$Q/mMS6Ibc49gc+QhWhaWsD884HLKMK/d8z5+nSlvrRM="
+      }
+    },
+    {
+      "model": "userauth.profile",
+      "pk": 4,
+      "fields": {
+          "user": 4,
+          "role": "driver",
+          "contact_number": "007"
+      }
+    },
+    {
+      "model": "auth.user",
+      "pk": 5,
+      "fields": {
+          "username": "macey",
+          "first_name": "hon",
+          "last_name": "da",
+          "email": "honda@gmail.com",
+          "password": "pbkdf2_sha256$320000$WCwphnHHVLHIWY6x7xzVA1$Q/mMS6Ibc49gc+QhWhaWsD884HLKMK/d8z5+nSlvrRM="
+      }
+    },
+    {
+      "model": "userauth.profile",
+      "pk": 5,
+      "fields": {
+          "user": 5,
+          "role": "driver",
+          "contact_number": "007"
+      }
+    },
+    {
+      "model": "auth.user",
+      "pk": 6,
+      "fields": {
+          "username": "lalo",
+          "first_name": "la",
+          "last_name": "lo",
+          "email": "lalo@gmail.com",
+          "password": "pbkdf2_sha256$320000$WCwphnHHVLHIWY6x7xzVA1$Q/mMS6Ibc49gc+QhWhaWsD884HLKMK/d8z5+nSlvrRM="
+      }
+    },
+    {
+      "model": "userauth.profile",
+      "pk": 6,
+      "fields": {
+          "user": 6,
+          "role": "customer",
+          "contact_number": "007"
+      }
+    },
+    {
+      "model": "auth.user",
+      "pk": 7,
+      "fields": {
+          "username": "salamanca",
+          "first_name": "sala",
+          "last_name": "manca",
+          "email": "salamanca@gmail.com",
+          "password": "pbkdf2_sha256$320000$WCwphnHHVLHIWY6x7xzVA1$Q/mMS6Ibc49gc+QhWhaWsD884HLKMK/d8z5+nSlvrRM="
+      }
+    },
+    {
+      "model": "userauth.profile",
+      "pk": 7,
+      "fields": {
+          "user": 7,
+          "role": "customer",
+          "contact_number": "007"
+      }
+    },
+    {
+      "model": "auth.user",
+      "pk": 8,
+      "fields": {
+          "username": "tuco",
+          "first_name": "tu",
+          "last_name": "co",
+          "email": "tuco@gmail.com",
+          "password": "pbkdf2_sha256$320000$WCwphnHHVLHIWY6x7xzVA1$Q/mMS6Ibc49gc+QhWhaWsD884HLKMK/d8z5+nSlvrRM="
+      }
+    },
+    {
+      "model": "userauth.profile",
+      "pk": 8,
+      "fields": {
+          "user": 8,
+          "role": "customer",
+          "contact_number": "007"
+      }
+    },
+    {
+      "model": "auth.user",
+      "pk": 9,
+      "fields": {
+          "username": "nacho",
+          "first_name": "na",
+          "last_name": "cho",
+          "email": "nacho@gmail.com",
+          "password": "pbkdf2_sha256$320000$WCwphnHHVLHIWY6x7xzVA1$Q/mMS6Ibc49gc+QhWhaWsD884HLKMK/d8z5+nSlvrRM="
+      }
+    },
+    {
+      "model": "userauth.profile",
+      "pk": 9,
+      "fields": {
+          "user": 9,
+          "role": "customer",
+          "contact_number": "007"
+      }
+    },
+    {
+      "model": "auth.user",
+      "pk": 10,
+      "fields": {
+          "username": "hector",
+          "first_name": "hec",
+          "last_name": "tor",
+          "email": "hector@gmail.com",
+          "password": "pbkdf2_sha256$320000$WCwphnHHVLHIWY6x7xzVA1$Q/mMS6Ibc49gc+QhWhaWsD884HLKMK/d8z5+nSlvrRM="
+      }
+    },
+    {
+      "model": "userauth.profile",
+      "pk": 10,
+      "fields": {
+          "user": 10,
+          "role": "customer",
+          "contact_number": "007"
+      }
+    }
+]

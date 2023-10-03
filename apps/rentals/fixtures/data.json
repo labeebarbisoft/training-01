@@ -1,0 +1,146 @@
+[
+    {
+      "model": "rentals.VehicleCategory",
+      "pk": 1,
+      "fields": {
+        "category": "Sedan"
+      }
+    }, 
+    {
+      "model": "rentals.VehicleCategory",
+      "pk": 2,
+      "fields": {
+        "category": "Coaster"
+      }
+    },   
+    {
+      "model": "rentals.VehicleCategory",
+      "pk": 3,
+      "fields": {
+        "category": "Grand Cabin"
+      }
+    },
+    {
+      "model": "rentals.Vehicle",
+      "pk": 1,
+      "fields": {
+        "category": 1,
+        "fuel_type": "gasoline",
+        "seating_capacity": 12,
+        "is_active": true,
+        "image_path": "/images/sedan.jpg"
+      }
+    },
+    {
+      "model": "rentals.Vehicle",
+      "pk": 2,
+      "fields": {
+        "category": 2,
+        "fuel_type": "gasoline",
+        "seating_capacity": 16,
+        "is_active": true,
+        "image_path": "/images/coaster.jpg"
+      }
+    },
+    {
+      "model": "rentals.Vehicle",
+      "pk": 3,
+      "fields": {
+        "category": 3,
+        "fuel_type": "gasoline",
+        "seating_capacity": 20,
+        "is_active": true,
+        "image_path": "/images/grand_cabin.jpg"
+      }
+    },
+    {
+      "model": "rentals.Location",
+      "pk": 1,
+      "fields": {
+        "title": "Arbisoft",
+        "full_address": "25 WestWood Colony, Canal Road"
+      }
+    },
+    {
+      "model": "rentals.Location",
+      "pk": 2,
+      "fields": {
+        "title": "Emporium",
+        "full_address": "26 Nice Block, Johar Town"
+      }
+    },
+    {
+      "model": "rentals.Location",
+      "pk": 3,
+      "fields": {
+        "title": "Gym",
+        "full_address": "28 Heavy Block, Muscle Market"
+      }
+    },
+    {
+      "model": "rentals.VehicleBookingRequest",
+      "pk": 1,
+      "fields": {
+        "pickup_location": 1,
+        "dropoff_location": 2,
+        "pickup_datetime": "2023-08-28T12:00:00Z",
+        "status": "pending",
+        "vehicle": 1,
+        "driver": 1,
+        "customer": 6
+      }
+    },
+    {
+      "model": "rentals.VehicleBookingRequest",
+      "pk": 2,
+      "fields": {
+        "pickup_location": 1,
+        "dropoff_location": 3,
+        "pickup_datetime": "2023-08-28T12:00:00Z",
+        "status": "pending",
+        "vehicle": 2,
+        "driver": 2,
+        "customer": 7
+      }
+    },
+    {
+      "model": "rentals.VehicleBookingRequest",
+      "pk": 3,
+      "fields": {
+        "pickup_location": 2,
+        "dropoff_location": 3,
+        "pickup_datetime": "2023-08-28T12:00:00Z",
+        "status": "pending",
+        "vehicle": 3,
+        "driver": 3,
+        "customer": 8
+      }
+    },
+    {
+      "model": "rentals.VehicleBookingRequest",
+      "pk": 4,
+      "fields": {
+        "pickup_location": 2,
+        "dropoff_location": 1,
+        "pickup_datetime": "2023-08-28T12:00:00Z",
+        "status": "pending",
+        "vehicle": 1,
+        "driver": 4,
+        "customer": 9
+      }
+    },
+    {
+      "model": "rentals.VehicleBookingRequest",
+      "pk": 5,
+      "fields": {
+        "pickup_location": 3,
+        "dropoff_location": 1,
+        "pickup_datetime": "2023-08-28T12:00:00Z",
+        "status": "pending",
+        "vehicle": 2,
+        "driver": 5,
+        "customer": 10
+      }
+    }
+  ]
+  

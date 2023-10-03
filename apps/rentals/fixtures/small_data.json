@@ -1,0 +1,48 @@
+[
+    {
+      "model": "rentals.VehicleCategory",
+      "pk": 1,
+      "fields": {
+        "category": "Sedan"
+      }
+    }, 
+    {
+      "model": "rentals.VehicleCategory",
+      "pk": 2,
+      "fields": {
+        "category": "Coaster"
+      }
+    },   
+    {
+      "model": "rentals.VehicleCategory",
+      "pk": 3,
+      "fields": {
+        "category": "Grand Cabin"
+      }
+    },
+    {
+      "model": "rentals.Location",
+      "pk": 1,
+      "fields": {
+        "title": "Arbisoft",
+        "full_address": "25 WestWood Colony, Canal Road"
+      }
+    },
+    {
+      "model": "rentals.Location",
+      "pk": 2,
+      "fields": {
+        "title": "Emporium",
+        "full_address": "26 Nice Block, Johar Town"
+      }
+    },
+    {
+      "model": "rentals.Location",
+      "pk": 3,
+      "fields": {
+        "title": "Gym",
+        "full_address": "28 Heavy Block, Muscle Market"
+      }
+    }
+  ]
+  

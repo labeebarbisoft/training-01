@@ -1,0 +1,30 @@
+{% extends "rentals/base.html" %}
+
+
+{% block content %}
+
+<h1>All Order Details</h1>
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Username</th>
+        <th scope="col">Total Rides</th>
+        <th scope="col">Total Fare</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for row in report %}
+        <tr>
+        {% for key, value in row.items %}
+        
+            <td scope="row">{{ value }}</td>
+            
+        
+        {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
