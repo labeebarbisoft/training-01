@@ -1,4 +1,4 @@
-#!/Users/labeeb/arbisoft/week4/training/.venv/bin/python
+#!/Users/labeeb/arbisoft/week4/training/.venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys
