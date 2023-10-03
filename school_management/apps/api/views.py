@@ -272,8 +272,7 @@ class AttendanceView(APIView):
                 status=status.HTTP_200_OK,
             )
         return Response(
-            {"Attendances": data},
-            status=status.HTTP_200_OK,
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
     def put(self, request):
