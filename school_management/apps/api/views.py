@@ -285,17 +285,25 @@ class AttendanceView(APIView):
         return Response({}, status=status.HTTP_200_OK)
 
 
+class InformationView(APIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAdminUser]
+
+    def get_students(self):
+        students = Student.objects.all()
+        serializer = StudnetSerializer(students, many=True)
+        return serializer.data
+
+    def get(self, request):
+        return Response(
+            {"Students": self.get_students()},
+            status=status.HTTP_200_OK,
+        )
+
+
 class StudentInformationView(APIView):
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated, IsOwnerOfAttendance]
-
-    def get(self, request):
-        content = {
-            "user": str(request.user),  # `django.contrib.auth.User` instance.
-            "staff": str(request.user.is_staff),  # `django.contrib.auth.User` instance.
-            "auth": str(request.auth),  # None
-        }
-        return Response(content)
 
     def post(self, request):
         body = json.loads(request.body.decode("utf-8"))
@@ -304,7 +312,6 @@ class StudentInformationView(APIView):
         if operation == "profile":
             try:
                 student = Student.objects.get(pk=data["id"])
-                self.check_object_permissions(request, student)
                 serializer = StudnetSerializer(student)
                 return Response({"student": serializer.data}, status=status.HTTP_200_OK)
             except Student.DoesNotExist:
@@ -331,6 +338,12 @@ class StudentInformationView(APIView):
                 return Response(
                     {"message": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
                 )
+        elif operation == "edit":
+            student = Student.objects.get(pk=data["id"])
+            student.name = data["new_name"]
+            student.save()
+            serializer = StudnetSerializer(student)
+            return Response({"message": serializer.data}, status=status.HTTP_200_OK)
         return Response(
             {"message": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
         )

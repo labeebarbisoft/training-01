@@ -6,6 +6,7 @@ from .views import (
     CreateAttendanceView,
     AttendanceView,
     StudentInformationView,
+    InformationView,
 )
 
 urlpatterns = [
@@ -26,5 +27,10 @@ urlpatterns = [
         "student_info/",
         StudentInformationView.as_view(),
         name="student_info",
+    ),
+    path(
+        "information/",
+        InformationView.as_view(),
+        name="information",
     ),
 ]
