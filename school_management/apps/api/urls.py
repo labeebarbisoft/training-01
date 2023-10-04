@@ -1,4 +1,5 @@
 from django.urls import path
+from graphene_django.views import GraphQLView
 from .views import (
     BranchView,
     GradeView,
@@ -8,6 +9,7 @@ from .views import (
     StudentInformationView,
     InformationView,
 )
+from .schema import schema
 
 urlpatterns = [
     path("branch/", BranchView.as_view(), name="branch"),
@@ -33,4 +35,5 @@ urlpatterns = [
         InformationView.as_view(),
         name="information",
     ),
+    path("graphql", GraphQLView.as_view(graphiql=True, schema=schema)),
 ]
