@@ -72,6 +72,32 @@ class BaseTestCase(TestCase):
         )
 
 
+class GraphQl(BaseTestCase):
+    def setUp(self):
+        super().setUp()
+
+    def test_verify_returned_data(self):
+        graphql_query = '''
+        query {
+            allStudents {
+                id
+                name
+            }
+        }
+        '''
+        response = self.client.post('/graphql', {'query': graphql_query})
+        self.assertEqual(response.status_code, 200)
+        response_json = json.loads(response.content)
+        self.assertIn('data', response_json)
+        data = response_json['data']
+        self.assertIn('allStudents', data)
+        students = data['allStudents']
+        self.assertIsInstance(students, list)
+        self.assertTrue(len(students) > 0)
+        for student in students:
+            self.assertIn('id', student)
+            self.assertIn('name', student)
+
 class Attendance200(BaseTestCase):
     def setUp(self):
         super().setUp()
