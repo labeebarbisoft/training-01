@@ -9,6 +9,7 @@ from .models import (
     Student,
     Date,
     Attendance,
+    Profile,
 )
 
 admin.site.register(City)
@@ -20,3 +21,4 @@ admin.site.register(Subject)
 admin.site.register(Student)
 admin.site.register(Date)
 admin.site.register(Attendance)
+admin.site.register(Profile)

@@ -1,6 +1,13 @@
 import graphene
-from graphene_django import DjangoObjectType, DjangoListField
+from graphene_django import DjangoObjectType
 from .models import Student, Branch, Subject
+from django.contrib.auth.models import User
+
+
+class UserType(DjangoObjectType):
+    class Meta:
+        model = User
+        fields = ("id", "username", "password")
 
 
 class StudentType(DjangoObjectType):
@@ -33,30 +40,22 @@ class Query(graphene.ObjectType):
         return Student.objects.get(pk=id)
 
 
-class StudentMutation(graphene.Mutation):
+class UserMutation(graphene.Mutation):
     class Arguments:
-        name = graphene.String(required=True)
-        branch_id = graphene.Int(required=True)
-        subject_ids = graphene.List(graphene.Int)
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
 
-    student = graphene.Field(StudentType)
+    user = graphene.Field(UserType)
 
     @classmethod
-    def mutate(cls, self, info, name, branch_id, subject_ids=None):
-        branch = Branch.objects.get(pk=branch_id)
-        if subject_ids is not None:
-            subjects = Subject.objects.filter(pk__in=subject_ids)
-        else:
-            subjects = []
-
-        student = Student(name=name, branch=branch)
-        student.save()
-        student.subjects.set(subjects)
-        return StudentMutation(student=student)
+    def mutate(cls, self, info, username, password):
+        user = User(username=username, password=password)
+        user.save()
+        return UserMutation(user=user)
 
 
 class Mutation(graphene.ObjectType):
-    add_student = StudentMutation.Field()
+    add_user = UserMutation.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
