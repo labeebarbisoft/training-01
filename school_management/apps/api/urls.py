@@ -8,6 +8,7 @@ from .views import (
     AttendanceView,
     StudentInformationView,
     InformationView,
+    RegistrationView,
 )
 from .schema import schema
 
@@ -15,6 +16,7 @@ urlpatterns = [
     path("branch/", BranchView.as_view(), name="branch"),
     path("grade/", GradeView.as_view(), name="grade"),
     path("section/", SectionView.as_view(), name="section"),
+    path("registration/", RegistrationView.as_view(), name="registration"),
     path(
         "create_attendance/",
         CreateAttendanceView.as_view(),

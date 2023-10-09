@@ -1,5 +1,24 @@
 from rest_framework import serializers
-from .models import City, School, Branch, Grade, Section, Attendance, Student, Subject
+from django.contrib.auth.models import User
+from .models import (
+    City,
+    School,
+    Branch,
+    Grade,
+    Section,
+    Attendance,
+    Student,
+    Subject,
+    Profile,
+)
+
+
+class UserSerializer(serializers.ModelSerializer):
+    role = serializers.CharField(source="profile.role", read_only=True)
+
+    class Meta:
+        model = User
+        fields = ["username", "role"]
 
 
 class CitySerializer(serializers.ModelSerializer):

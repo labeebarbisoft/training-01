@@ -1,10 +1,16 @@
 import json
 from django.db import transaction
+from django.contrib.auth.models import User, Permission, Group
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAdminUser,
+    DjangoModelPermissions,
+)
 from .permissions import IsOwnerOfAttendance
 from .models import (
     City,
@@ -23,12 +29,55 @@ from .serializers import (
     SectionSerializer,
     AttendanceSerializer,
     StudnetSerializer,
+    UserSerializer,
 )
+
+
+class RegistrationView(APIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [DjangoModelPermissions]
+    queryset = User.objects.all()
+
+    def post(self, request):
+        body = json.loads(request.body.decode("utf-8"))
+        operation = body["operation"]
+        data = body["data"]
+        if operation == "student":
+            user = User.objects.create_user(
+                username=data["username"], password=data["password"]
+            )
+            user.profile.role = "student"
+            user.save()
+            group = Group.objects.filter(name="Students").first()
+            group.user_set.add(user)
+            serializer = UserSerializer(user)
+            return Response(
+                {"Added": serializer.data},
+                status=status.HTTP_200_OK,
+            )
+        elif operation == "teacher":
+            user = User.objects.create_user(
+                username=data["username"], password=data["password"]
+            )
+            user.profile.role = "teacher"
+            user.is_staff = True
+            user.save()
+            group = Group.objects.filter(name="Teachers").first()
+            group.user_set.add(user)
+            serializer = UserSerializer(user)
+            return Response(
+                {"Added": serializer.data},
+                status=status.HTTP_200_OK,
+            )
+        return Response(
+            {"message": "Invalid request"}, status=status.HTTP_404_NOT_FOUND
+        )
 
 
 class BranchView(APIView):
     authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAdminUser]
+    permission_classes = [DjangoModelPermissions]
+    queryset = Branch.objects.all()
 
     def get_branches(self):
         branches = Branch.objects.all()
@@ -36,6 +85,8 @@ class BranchView(APIView):
         return serializer.data
 
     def get(self, request):
+        if not request.user.has_perm("api.view_branch"):
+            raise PermissionDenied("You do not have permission to view branches.")
         return Response(
             {"Branches": self.get_branches()},
             status=status.HTTP_200_OK,
