@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.admin import GroupAdmin
+from django.contrib.auth.models import Group
 from .models import (
     City,
     School,
@@ -11,6 +13,7 @@ from .models import (
     Attendance,
     Profile,
 )
+
 
 admin.site.register(City)
 admin.site.register(School)

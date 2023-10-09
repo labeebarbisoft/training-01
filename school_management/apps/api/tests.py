@@ -18,9 +18,6 @@ import json
 
 
 class GraphQl(TestCase):
-    def setUp(self):
-        super().setUp()
-
     def test_new_user_addition(self):
         graphql_query = """
                             mutation{
